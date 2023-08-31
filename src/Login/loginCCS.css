@@ -1,0 +1,33 @@
+/* Estilo base para el formulario de inicio de sesión */
+.GridPane {
+    -fx-background-color: #f4f4f4;
+}
+
+.login-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-padding: 10px 0;
+    -fx-text-fill: #333;
+}
+
+.login-input {
+    -fx-pref-width: 200px;
+    -fx-pref-height: 30px;
+}
+
+.login-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-pref-width: 100px;
+    -fx-pref-height: 30px;
+    -fx-font-weight: bold;
+}
+
+.login-button:hover {
+    -fx-background-color: #45a049;
+}
+
+.login-button:pressed {
+    -fx-background-color: #3e8e41;
+}

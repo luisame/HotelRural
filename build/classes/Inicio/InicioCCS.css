@@ -1,0 +1,60 @@
+/* Estilo base para los botones */
+.ButtonStyle {
+    -fx-font-size: 14px;
+    -fx-border-radius: 5px;
+    -fx-cursor: hand;
+    -fx-padding:  20px;
+}
+
+/* Estilo para el botón Administración */
+#btnAdministracion {
+    -fx-text-fill: white;
+    -fx-background-color: #d84315; /* Naranja oscuro */
+}
+#btnAdministracion:hover {
+    -fx-background-color: rgba(77, 208, 225, 0.8);
+}
+
+/* Estilo para el botón Clientes */
+#btnClientes {
+    -fx-text-fill: white;
+    -fx-background-color: #03a9f4; /* Azul celeste */
+}
+#btnClientes:hover {
+    -fx-background-color: rgba(244, 67, 54, 0.8);
+}
+
+/* Estilo para el botón Habitaciones */
+#btnHabitaciones {
+    -fx-text-fill: white;
+    -fx-background-color: #e91e63;
+}
+#btnHabitaciones:hover {
+    -fx-background-color: rgba(255, 160, 0, 0.8);
+}
+
+/* Estilo para el botón Reservas */
+#btnReservas {
+    -fx-text-fill: white;
+    -fx-background-color: #4caf50; /* Verde */
+}
+#btnReservas:hover {
+    -fx-background-color: rgba(139, 0, 0, 0.8);
+}
+
+/* Estilo para el botón Exit (sin cambios en este estilo) */
+#btnExit {
+    -fx-text-fill: white;
+    -fx-background-color: rgba(229, 115, 115, 0.8);
+    -fx-padding: 10px ;
+    -fx-border-radius: 5px;
+    -fx-cursor: hand;
+}
+
+#btnExit:hover {
+    -fx-background-color: rgba(184, 43, 43, 0.8);
+}
+
+#btnExit:pressed {
+    -fx-background-color: rgba(139, 0, 0, 0.8);
+}

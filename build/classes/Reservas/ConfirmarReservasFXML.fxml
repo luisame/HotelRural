@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="584.0" prefWidth="906.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Reservas.ConfirmarReservaController">
+   <children>
+      <VBox layoutX="55.0" layoutY="42.0" prefHeight="462.0" prefWidth="795.0" spacing="10.0">
+         <children>
+            <Label text="ID Reserva: " />
+            <Label fx:id="idReservaLabel" />
+            <Label text="Habitaciones: " />
+            <Label fx:id="habitacionesLabel" />
+            <Label text="Fecha de Entrada: " />
+            <Label fx:id="fechaEntradaLabel" />
+            <Label text="Fecha de Salida: " />
+            <Label fx:id="fechaSalidaLabel" />
+            <BorderPane prefHeight="1.0" prefWidth="874.0" />
+            <Label text="Nombre Cliente: " />
+            <Label fx:id="nombre_cliente" />
+            <Label text="Número de Personas: " />
+            <Label fx:id="numPersonasLabel" />
+            <Label text="Precio por Persona: " />
+            <Label fx:id="precioPersonaLabel" />
+            <Label text="Total Estancia: " />
+            <Label fx:id="totalEstanciaLabel" />
+            <Label text="Número de Tarjeta de Crédito: " />
+            <Label fx:id="numeroTarjetaLabel" />
+          </children>
+      </VBox>
+      <Label layoutX="372.0" layoutY="14.0" text="Reserva Confirmada">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
