@@ -22,10 +22,10 @@ public class ReservasMain extends Application {
     public void start(Stage primaryStage) {
         if (usuarioInfo != null) {
             nivelAcceso = usuarioInfo.getNivelAcceso();
-            System.out.println("nivel_acceso_ Clientes= " + nivelAcceso);
+            System.out.println("nivel_acceso_ Reservas= " + nivelAcceso);
             
             if (nivelAcceso == 1) {
-                launchClientes(primaryStage); // Lanzar ventana de clientes
+                launchReservas(primaryStage); // Lanzar ventana de clientes
             } else {
                 showNoAccessAlert();
             }
@@ -43,7 +43,7 @@ public class ReservasMain extends Application {
         this.usuarioInfo = usuarioInfo;
     }
 
-    public void launchClientes(Stage stage) {
+    public void launchReservas(Stage stage) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ReservasFXML.fxml"));
             Parent root = loader.load();

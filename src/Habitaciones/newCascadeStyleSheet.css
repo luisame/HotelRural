@@ -1,0 +1,23 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+   
+    Author     : luisa
+*/
+.dibujado {
+    -fx-background-color: #CC0000; /* Rojo oscuro  */
+    -fx-text-fill: #bbbbbb; /* Color de texto negro */
+    -fx-font-weight: bold; /* Fuente en negrita */
+    -fx-padding: 10px; /* Espaciado interno */
+    -fx-font-size: 14px; /* Tamaño de fuente */
+    -fx-border-radius: 4px; /* Radio de los bordes */
+     -fx-cursor: hand;
+}
+
+.dibujado:hover {
+    --fx-background-color: rgba(56, 142, 60, 0.8); /* Color de fondo verde claro con transparencia */
+    -fx-text-fill: #E0E0E0; /* Color de texto blanco */
+}
+

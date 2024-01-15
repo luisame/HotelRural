@@ -26,7 +26,7 @@ public class DataSourceManager {
         ds = new HikariDataSource(config);
     }
 
-    private DataSourceManager() {}
+    public DataSourceManager() {}
 
     public static Connection getConnection() throws SQLException {
         return ds.getConnection();

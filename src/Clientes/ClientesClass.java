@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Clientes;
-
+import Utilidades.FormatoDNI;
 /**
  *
  * @author luisa
@@ -22,9 +22,11 @@ public class ClientesClass {
     public String getDni() {
         return dni;
     }
-
-    public void setDni(String dni) {
-        this.dni = dni;
+public void setDni(String dni) {
+        // Formatear el DNI o NIE utilizando la clase FormatoDNI
+        this.dni = FormatoDNI.formatearIdentificacion(dni);
+   
+       
     }
 
     public String getNombreCliente() {
@@ -90,5 +92,6 @@ public class ClientesClass {
     public void setOtraInformacion(String otraInformacion) {
         this.otraInformacion = otraInformacion;
     }
+    
 }
 

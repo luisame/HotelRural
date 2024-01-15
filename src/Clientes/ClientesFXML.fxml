@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1392.0" style="-fx-padding: 40px;" styleClass="contenedor-principal" stylesheets="/Clientes/ClientesCCSnuevo.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Clientes.ClientesControllerNuevo">
+<AnchorPane prefHeight="600.0" prefWidth="1392.0" style="-fx-padding: 40px;" styleClass="contenedor-principal" stylesheets="/Clientes/ClientesCCSnuevo.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Clientes.ClientesControlador">
     <TabPane fx:id="miTabPane" layoutX="80.0" layoutY="80.0" prefHeight="550.0" prefWidth="1015.0" AnchorPane.bottomAnchor="60" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="-18.0" AnchorPane.topAnchor="40.0">
 
         <Tab text="Consultar">

@@ -1,16 +1,48 @@
 
-package RestoreHotelRural;
+package BBDDRural;
 
-import BBDDRural.RestoreDatabase;
 import java.io.File;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 
-public class RestoreDataBaseCont {
-  
-    @FXML
+/**
+ *
+ * @author luisa
+ */
+/**
+ * @file   BBDDController.java
+ * @brief  Controlador para la interfaz de usuario definida en BBDD.fxml.
+ *
+ * Este archivo contiene la clase controladora para la interfaz de usuario de la aplicación,
+ * definida en el archivo BBDD.fxml. Incluye manejadores para los eventos de la interfaz,
+ * como los botones para realizar copias de seguridad y restaurar datos.
+ *
+ * @see    BBDDFXML.fxml
+ */
+public class BBDDController {
+    
+    
+     @FXML
+    private void handleBackupButton() {
+        String host = "localhost";
+        String port = "3306";
+        String database = "hotelr_test";
+        String username = "root";
+        String password = "?7Ash€r";
+
+        boolean backupSuccess = BackupDatabase.performBackup(host, port, database, username, password);
+
+        if (backupSuccess) {
+            showInfoAlert("Backup completed successfully (Cont).");
+        } else {
+            showErrorAlert("Backup failed (Cont).");
+        }
+    }
+
+   
+
+@FXML
     private void handleRestoreButton() {
         String host = "localhost";
         String port = "3306";
@@ -39,10 +71,10 @@ public class RestoreDataBaseCont {
                 showErrorAlert("Restore failed.");
             }
         }
+    
     }
-
     private void showInfoAlert(String message) {
-        Alert alert = new Alert(AlertType.INFORMATION);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information");
         alert.setHeaderText(null);
         alert.setContentText(message);
@@ -50,7 +82,7 @@ public class RestoreDataBaseCont {
     }
 
     private void showErrorAlert(String message) {
-        Alert alert = new Alert(AlertType.ERROR);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText(null);
         alert.setContentText(message);

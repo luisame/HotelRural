@@ -1,92 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.cell.PropertyValueFactory?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="700.0" prefWidth="800.0" spacing="20" stylesheets="/Reservas/ReservasCCS.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Reservas.ReservasController">
-    <padding>
-        <Insets bottom="40" left="20" right="20" top="40" />
-    </padding>
-    <!-- GridPane: Contiene los controles -->
-    <GridPane alignment="TOP_RIGHT" hgap="10" prefWidth="600" vgap="10">
-        <!-- Definición de las ColumnConstraints -->
-        <columnConstraints>
-            <ColumnConstraints percentWidth="22.0" />
-            <ColumnConstraints percentWidth="31.0" />
-            <ColumnConstraints percentWidth="47.0" />
-        </columnConstraints>
-        <!-- Definición de las RowConstraints -->
-        <rowConstraints>
-            <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="20.0" />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-        </rowConstraints>
-        
-        <!-- Controles del GridPane -->
-        
-        <Label text="De:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <DatePicker fx:id="datePickerEntrada" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-        <Label text="Hasta:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <DatePicker fx:id="datePickerSalida" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-        <Label text="Número de Habitaciones:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-        <ComboBox fx:id="numHabitacionesComboBox" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-        <Label text="Capacidad:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-        <TextField fx:id="capacidadField" maxWidth="150" promptText="Capacidad" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-       
-    </GridPane>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<?import java.time.*?>
 
-    <Button fx:id="btnBuscarHabitaciones" styleClass="button" text="Buscar Habitaciones" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Reservas.ReservasController" spacing="10">
+    <HBox spacing="10">
+        <Label text="Fecha de Inicio:" />
+        <DatePicker fx:id="fechaInicio" />
+        <Label text="Fecha de Fin:" />
+        <DatePicker fx:id="fechaFin" />
+    </HBox>
+    <HBox spacing="10">
+        <Label text="Número de Personas:" />
+        <TextField fx:id="numeroPersonas" />
+        <Button text="Buscar Disponibilidad" onAction="#buscarDisponibilidad" />
+    </HBox>
+    <TableView fx:id="tablaHabitacionesDisponibles">
+        <columns>
+            <TableColumn text="ID Habitación">
+    <cellValueFactory>
+        <PropertyValueFactory property="id" />
+    </cellValueFactory>
+    </TableColumn>
+        <TableColumn text="Tipo">
+             <cellValueFactory>
+               <PropertyValueFactory property="tipo" />
+             </cellValueFactory>
+    </TableColumn>
+    <TableColumn text="Capacidad">
+        <cellValueFactory>
+            <PropertyValueFactory property="capacidad" />
+        </cellValueFactory>
+    </TableColumn>
+    <TableColumn text="Estado">
+        <cellValueFactory>
+            <PropertyValueFactory property="estado" />
+        </cellValueFactory>
+    </TableColumn>
 
-
-
-    <!-- TableView -->
-    <!-- TableView -->
-<TableView fx:id="tablaHabitaciones" VBox.vgrow="ALWAYS">
-    <columns>
-        <TableColumn fx:id="idHabitacionColumna" prefWidth="114.4000244140625" text="ID Habitación">
-            <cellValueFactory>
-                <PropertyValueFactory property="idHabitacion" />
-            </cellValueFactory>
-        </TableColumn>
-        <TableColumn fx:id="capacidadColumna" prefWidth="72.0" text="Capacidad">
-            <cellValueFactory>
-                <PropertyValueFactory property="capacidad" />
-            </cellValueFactory>
-        </TableColumn>
-        <TableColumn fx:id="descripcionColumna" prefWidth="285.5999755859375" text="Descripción">
-            <cellValueFactory>
-                <PropertyValueFactory property="descripcion" />
-            </cellValueFactory>
-        </TableColumn>
-        <TableColumn fx:id="estadoColumna" prefWidth="156.79998779296875" text="Estado">
-            <cellValueFactory>
-                <PropertyValueFactory property="estado" />
-            </cellValueFactory>
-        </TableColumn>
-        <TableColumn fx:id="precioColumna" prefWidth="129.60003662109375" text="Precio">
-            <cellValueFactory>
-                <PropertyValueFactory property="precio" />
-            </cellValueFactory>
-        </TableColumn>
-        <!-- Agrega aquí más columnas si es necesario -->
-    </columns>
-</TableView>
-
-
-    <Button fx:id="btnReservar" styleClass="button" text="Reservar" />
-    <Button styleClass="button-cerrar" layoutX="1221.0" layoutY="22.0" onAction="#cerrarMenu" prefHeight="39.0" prefWidth="70.0" text="Cerrar"/>
-    
+            <!-- Agregar más columnas si es necesario -->
+        </columns>
+    </TableView>
 </VBox>

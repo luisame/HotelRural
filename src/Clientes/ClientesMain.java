@@ -48,7 +48,7 @@ public class ClientesMain extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ClientesFXML.fxml"));
             Parent root = loader.load();
 
-            ClientesControllerNuevo controller = loader.getController();
+            ClientesControlador controller = loader.getController();
             controller.setUsuarioInfo(usuarioInfo);
 
             Scene scene = new Scene(root);

@@ -202,10 +202,10 @@ public static List<HabitacionInfo> obtenerHabitacionesDesdeDB(LocalDate fechaEnt
             
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
-               MensajeError.mostrarMensaje("Reserva insertada en la base de datos.", AlertType.INFORMATION);
+               MensajeError.mostrarMensaje("Reserva insertada en la base de datos.");
 
             } else {
-                MensajeError.mostrarMensaje("Error al insertar la reserva.", AlertType.ERROR);
+                MensajeError.mostrarMensaje("Error al insertar la reserva.");
             }
             preparedStatement.close();
             connection.close();
