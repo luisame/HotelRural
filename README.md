@@ -1,3 +1,5 @@
+Se trata de un TFG de UNIR para el Grado en Ingeniería Informática
+
 # HotelRural Programa de gestion Hotel Ejemplo
  
 Estructura del directorio src en el Proyecto HotelRural:
