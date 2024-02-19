@@ -3,20 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/luisa/Documents/NetBeansProjects/HotelRural/src/Utilidades/ConfiguracionDB.properties</file>
-            <file>file:/C:/Users/luisa/Documents/NetBeansProjects/HotelRural/src/Utilidades/UsuarioInfo.java</file>
+            <file>file:/C:/Users/luisa/Documents/NetBeansProjects/HotelRural/src/Reservas/ReservaController.java</file>
+            <file>file:/C:/Users/luisa/Documents/NetBeansProjects/HotelRural/src/Reservas/DisponibilidadController.java</file>
+            <file>file:/C:/Users/luisa/Documents/NetBeansProjects/HotelRural/src/Reservas/Habitacion.java</file>
             <file>file:/C:/Users/luisa/Documents/NetBeansProjects/HotelRural/src/Login/LoginController.java</file>
-            <file>file:/C:/Users/luisa/Documents/NetBeansProjects/HotelRural/src/Reservas/ReservasController.java</file>
+            <file>file:/C:/Users/luisa/Documents/NetBeansProjects/HotelRural/src/Login/LoginMain.java</file>
             <file>file:/C:/Users/luisa/Documents/NetBeansProjects/HotelRural/src/Inicio/InicioFXML.fxml</file>
-            <file>file:/C:/Users/luisa/Documents/NetBeansProjects/HotelRural/src/Utilidades/BDUtilidades.java</file>
-            <file>file:/C:/Users/luisa/Documents/NetBeansProjects/HotelRural/src/Utilidades/HabitacionInfo.java</file>
-            <file>file:/C:/Users/luisa/Documents/NetBeansProjects/HotelRural/src/Utilidades/DataSourceManager.java</file>
-            <file>file:/C:/Users/luisa/Documents/NetBeansProjects/HotelRural/src/Utilidades/ConfigLoader.java</file>
-            <file>file:/C:/Users/luisa/Documents/NetBeansProjects/HotelRural/src/Clientes/ClientesControllerNuevo.java</file>
-            <file>file:/C:/Users/luisa/Documents/NetBeansProjects/HotelRural/src/BackupHotelRural/BackupDatabase.java</file>
-            <file>file:/C:/Users/luisa/Documents/NetBeansProjects/HotelRural/src/Reservas/ReservasFXML.fxml</file>
+            <file>file:/C:/Users/luisa/Documents/NetBeansProjects/HotelRural/pom.xml</file>
+            <file>file:/C:/Users/luisa/Documents/NetBeansProjects/HotelRural/src/Reservas/ReservaFXML.fxml</file>
             <file>file:/C:/Users/luisa/Documents/NetBeansProjects/HotelRural/src/Login/LoginFXML.fxml</file>
-            <file>file:/C:/Users/luisa/Documents/NetBeansProjects/HotelRural/src/BackupHotelRural/BackupDataBaseCont.java</file>
+            <file>file:/C:/Users/luisa/Documents/NetBeansProjects/HotelRural/src/Reservas/DisponibilidadFXML.fxml</file>
         </group>
     </open-files>
 </project-private>

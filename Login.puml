@@ -1,0 +1,38 @@
+@startuml
+class Inicio.InicioController
+class Login.LoginController
+class Login.LoginMain
+class java.io.IOException
+class java.net.URL
+class java.sql.Connection
+class java.sql.PreparedStatement
+class java.sql.ResultSet
+class java.sql.SQLException
+class java.util.ResourceBundle
+class javafx.application.Application
+class javafx.fxml.FXMLLoader
+class javafx.scene.Parent
+class javafx.scene.Scene
+class javafx.stage.Stage
+class utilidades.DataSourceManager
+class utilidades.UsuarioInfo
+Login.LoginController ..> Inicio.InicioController
+Login.LoginController ..> java.io.IOException
+Login.LoginController ..> java.net.URL
+Login.LoginController ..> java.sql.Connection
+Login.LoginController ..> java.sql.PreparedStatement
+Login.LoginController ..> java.sql.ResultSet
+Login.LoginController ..> java.sql.SQLException
+Login.LoginController ..> java.util.ResourceBundle
+Login.LoginController ..> javafx.fxml.FXMLLoader
+Login.LoginController ..> javafx.scene.Parent
+Login.LoginController ..> javafx.scene.Scene
+Login.LoginController ..> javafx.stage.Stage
+Login.LoginController ..> utilidades.DataSourceManager
+Login.LoginController ..> utilidades.UsuarioInfo
+Login.LoginMain ..> javafx.fxml.FXMLLoader
+Login.LoginMain ..> javafx.scene.Parent
+Login.LoginMain ..> javafx.scene.Scene
+Login.LoginMain ..> javafx.stage.Stage
+Login.LoginMain ..> utilidades.UsuarioInfo
+@enduml

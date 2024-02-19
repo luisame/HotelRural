@@ -1,0 +1,29 @@
+@startuml
+class Administracion.AdministracionMain
+class Clientes.ClientesMain
+class Habitaciones.HabitacionesMain
+class Inicio.InicioController
+class Inicio.InicioMain
+class Reservas.ReservasMain
+class javafx.application.Application
+class javafx.application.Platform
+class javafx.event.ActionEvent
+class javafx.fxml.FXMLLoader
+class javafx.scene.Parent
+class javafx.scene.Scene
+class javafx.stage.Stage
+class utilidades.UsuarioInfo
+Inicio.InicioController ..> Administracion.AdministracionMain
+Inicio.InicioController ..> Clientes.ClientesMain
+Inicio.InicioController ..> Habitaciones.HabitacionesMain
+Inicio.InicioController ..> Reservas.ReservasMain
+Inicio.InicioController ..> javafx.application.Platform
+Inicio.InicioController ..> javafx.event.ActionEvent
+Inicio.InicioController ..> javafx.stage.Stage
+Inicio.InicioController ..> utilidades.UsuarioInfo
+Inicio.InicioMain ..> javafx.fxml.FXMLLoader
+Inicio.InicioMain ..> javafx.scene.Parent
+Inicio.InicioMain ..> javafx.scene.Scene
+Inicio.InicioMain ..> javafx.stage.Stage
+Inicio.InicioMain ..> utilidades.UsuarioInfo
+@enduml

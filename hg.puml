@@ -1,0 +1,259 @@
+@startuml
+annotation java.lang.Override
+annotation javafx.fxml.FXML
+class Administracion.AdministracionController
+class Administracion.AdministracionMain
+class BBDDRural.BBDDController
+class BBDDRural.BackupDatabase
+class BBDDRural.RestoreDatabase
+class Clientes.ClientesClass
+class Clientes.ClientesControllerNuevo
+class Clientes.ClientesMain
+class Habitaciones.ConsultasHabitaciones
+class Habitaciones.Habitacion
+class Habitaciones.HabitacionesController
+class Habitaciones.HabitacionesMain
+class Inicio.InicioController
+class Inicio.InicioMain
+class Login.LoginController
+class Login.LoginMain
+class Reservas.Habitacion
+class Reservas.ReservasController
+class Reservas.ReservasMain
+class RestoreHotelRural.RestoreDataBaseCont
+class RestoreHotelRural.RestoreDatabase
+class RestoreHotelRural.RestoreDatabaseMain
+class Utilidades.HabitacionInfo
+class Utilidades.MensajeError
+class Utilidades.ReservaInfo
+class com.zaxxer.hikari.HikariConfig
+class com.zaxxer.hikari.HikariDataSource
+class java.io.File
+class java.io.IOException
+class java.io.InputStream
+class java.math.BigDecimal
+class java.net.URL
+class java.sql.Connection
+class java.sql.PreparedStatement
+class java.sql.ResultSet
+class java.sql.SQLException
+class java.text.SimpleDateFormat
+class java.time.LocalDate
+class java.util.ArrayList
+class java.util.Date
+class java.util.List
+class java.util.Properties
+class java.util.ResourceBundle
+class java.util.logging.Level
+class java.util.logging.Logger
+class javafx.application.Application
+class javafx.application.Platform
+class javafx.beans.property.IntegerProperty
+class javafx.beans.property.SimpleIntegerProperty
+class javafx.beans.property.SimpleStringProperty
+class javafx.beans.property.StringProperty
+class javafx.collections.FXCollections
+class javafx.collections.ObservableList
+class javafx.event.ActionEvent
+class javafx.fxml.FXMLLoader
+class javafx.scene.Node
+class javafx.scene.Parent
+class javafx.scene.Scene
+class javafx.scene.control.Alert
+class javafx.scene.control.Alert.AlertType
+class javafx.scene.control.Button
+class javafx.scene.control.ComboBox
+class javafx.scene.control.DatePicker
+class javafx.scene.control.Label
+class javafx.scene.control.PasswordField
+class javafx.scene.control.TabPane
+class javafx.scene.control.TableColumn
+class javafx.scene.control.TableRow
+class javafx.scene.control.TableView
+class javafx.scene.control.TextField
+class javafx.stage.FileChooser
+class javafx.stage.Stage
+class utilidades.BDUtilidades
+class utilidades.ClienteInfo
+class utilidades.ConfigLoader
+class utilidades.DataSourceManager
+class utilidades.UsuarioInfo
+Administracion.AdministracionController ..> javafx.fxml.FXML
+Administracion.AdministracionController ..> javafx.event.ActionEvent
+Administracion.AdministracionController ..> javafx.scene.control.Alert
+Administracion.AdministracionController ..> javafx.stage.Stage
+Administracion.AdministracionController ..> utilidades.UsuarioInfo
+Administracion.AdministracionMain ..> java.lang.Override
+Administracion.AdministracionMain ..> java.io.IOException
+Administracion.AdministracionMain ..> java.util.logging.Level
+Administracion.AdministracionMain ..> java.util.logging.Logger
+Administracion.AdministracionMain --|> javafx.application.Application
+Administracion.AdministracionMain ..> javafx.fxml.FXMLLoader
+Administracion.AdministracionMain ..> javafx.scene.Parent
+Administracion.AdministracionMain ..> javafx.scene.Scene
+Administracion.AdministracionMain ..> javafx.scene.control.Alert
+Administracion.AdministracionMain ..> javafx.stage.Stage
+Administracion.AdministracionMain ..> utilidades.UsuarioInfo
+BBDDRural.BBDDController ..> javafx.fxml.FXML
+BBDDRural.BBDDController ..> java.io.File
+BBDDRural.BBDDController ..> javafx.scene.control.Alert
+BBDDRural.BBDDController ..> javafx.stage.FileChooser
+BBDDRural.BackupDatabase ..> java.io.File
+BBDDRural.BackupDatabase ..> java.io.IOException
+BBDDRural.BackupDatabase ..> java.text.SimpleDateFormat
+BBDDRural.BackupDatabase ..> java.util.Date
+BBDDRural.RestoreDatabase ..> java.io.IOException
+Clientes.ClientesControllerNuevo ..> javafx.fxml.FXML
+Clientes.ClientesControllerNuevo ..> Inicio.InicioMain
+Clientes.ClientesControllerNuevo ..> java.sql.Connection
+Clientes.ClientesControllerNuevo ..> java.sql.PreparedStatement
+Clientes.ClientesControllerNuevo ..> java.sql.ResultSet
+Clientes.ClientesControllerNuevo ..> java.sql.SQLException
+Clientes.ClientesControllerNuevo ..> javafx.event.ActionEvent
+Clientes.ClientesControllerNuevo ..> javafx.scene.Node
+Clientes.ClientesControllerNuevo ..> javafx.scene.control.Alert
+Clientes.ClientesControllerNuevo ..> javafx.scene.control.Alert.AlertType
+Clientes.ClientesControllerNuevo ..> javafx.scene.control.Button
+Clientes.ClientesControllerNuevo ..> javafx.scene.control.TabPane
+Clientes.ClientesControllerNuevo ..> javafx.scene.control.TableView
+Clientes.ClientesControllerNuevo ..> javafx.scene.control.TextField
+Clientes.ClientesControllerNuevo ..> javafx.stage.Stage
+Clientes.ClientesControllerNuevo ..> utilidades.DataSourceManager
+Clientes.ClientesControllerNuevo ..> utilidades.UsuarioInfo
+Clientes.ClientesMain ..> java.lang.Override
+Clientes.ClientesMain ..> java.io.IOException
+Clientes.ClientesMain --|> javafx.application.Application
+Clientes.ClientesMain ..> javafx.fxml.FXMLLoader
+Clientes.ClientesMain ..> javafx.scene.Parent
+Clientes.ClientesMain ..> javafx.scene.Scene
+Clientes.ClientesMain ..> javafx.scene.control.Alert
+Clientes.ClientesMain ..> javafx.stage.Stage
+Clientes.ClientesMain ..> utilidades.UsuarioInfo
+Habitaciones.ConsultasHabitaciones ..> javafx.collections.ObservableList
+Habitaciones.Habitacion ..> javafx.beans.property.SimpleIntegerProperty
+Habitaciones.Habitacion ..> javafx.beans.property.SimpleStringProperty
+Habitaciones.HabitacionesController ..> java.lang.Override
+Habitaciones.HabitacionesController ..> javafx.fxml.FXML
+Habitaciones.HabitacionesController ..> java.io.IOException
+Habitaciones.HabitacionesController ..> javafx.collections.FXCollections
+Habitaciones.HabitacionesController ..> javafx.collections.ObservableList
+Habitaciones.HabitacionesController ..> javafx.fxml.FXMLLoader
+Habitaciones.HabitacionesController ..> javafx.scene.Parent
+Habitaciones.HabitacionesController ..> javafx.scene.Scene
+Habitaciones.HabitacionesController ..> javafx.scene.control.Button
+Habitaciones.HabitacionesController ..> javafx.scene.control.ComboBox
+Habitaciones.HabitacionesController ..> javafx.scene.control.TableRow
+Habitaciones.HabitacionesController ..> javafx.scene.control.TableView
+Habitaciones.HabitacionesController ..> javafx.scene.control.TextField
+Habitaciones.HabitacionesController ..> javafx.stage.Stage
+Habitaciones.HabitacionesController ..> utilidades.UsuarioInfo
+Habitaciones.HabitacionesMain ..> java.lang.Override
+Habitaciones.HabitacionesMain ..> java.io.IOException
+Habitaciones.HabitacionesMain --|> javafx.application.Application
+Habitaciones.HabitacionesMain ..> javafx.fxml.FXMLLoader
+Habitaciones.HabitacionesMain ..> javafx.scene.Parent
+Habitaciones.HabitacionesMain ..> javafx.scene.Scene
+Habitaciones.HabitacionesMain ..> javafx.scene.control.Alert
+Habitaciones.HabitacionesMain ..> javafx.stage.Stage
+Habitaciones.HabitacionesMain ..> utilidades.UsuarioInfo
+Inicio.InicioController ..> javafx.fxml.FXML
+Inicio.InicioController ..> Administracion.AdministracionMain
+Inicio.InicioController ..> Clientes.ClientesMain
+Inicio.InicioController ..> Habitaciones.HabitacionesMain
+Inicio.InicioController ..> Reservas.ReservasMain
+Inicio.InicioController ..> javafx.application.Platform
+Inicio.InicioController ..> javafx.event.ActionEvent
+Inicio.InicioController ..> javafx.scene.control.Button
+Inicio.InicioController ..> javafx.scene.control.Label
+Inicio.InicioController ..> javafx.stage.Stage
+Inicio.InicioController ..> utilidades.UsuarioInfo
+Inicio.InicioMain ..> java.lang.Override
+Inicio.InicioMain --|> javafx.application.Application
+Inicio.InicioMain ..> javafx.fxml.FXMLLoader
+Inicio.InicioMain ..> javafx.scene.Parent
+Inicio.InicioMain ..> javafx.scene.Scene
+Inicio.InicioMain ..> javafx.stage.Stage
+Inicio.InicioMain ..> utilidades.UsuarioInfo
+Login.LoginController ..> javafx.fxml.FXML
+Login.LoginController ..> Inicio.InicioController
+Login.LoginController ..> java.io.IOException
+Login.LoginController ..> java.net.URL
+Login.LoginController ..> java.sql.Connection
+Login.LoginController ..> java.sql.PreparedStatement
+Login.LoginController ..> java.sql.ResultSet
+Login.LoginController ..> java.sql.SQLException
+Login.LoginController ..> java.util.ResourceBundle
+Login.LoginController ..> javafx.fxml.FXMLLoader
+Login.LoginController ..> javafx.scene.Parent
+Login.LoginController ..> javafx.scene.Scene
+Login.LoginController ..> javafx.scene.control.Alert
+Login.LoginController ..> javafx.scene.control.PasswordField
+Login.LoginController ..> javafx.scene.control.TextField
+Login.LoginController ..> javafx.stage.Stage
+Login.LoginController ..> utilidades.DataSourceManager
+Login.LoginController ..> utilidades.UsuarioInfo
+Login.LoginMain ..> java.lang.Override
+Login.LoginMain --|> javafx.application.Application
+Login.LoginMain ..> javafx.fxml.FXMLLoader
+Login.LoginMain ..> javafx.scene.Parent
+Login.LoginMain ..> javafx.scene.Scene
+Login.LoginMain ..> javafx.stage.Stage
+Login.LoginMain ..> utilidades.UsuarioInfo
+Reservas.Habitacion ..> javafx.beans.property.IntegerProperty
+Reservas.Habitacion ..> javafx.beans.property.StringProperty
+Reservas.ReservasController ..> javafx.fxml.FXML
+Reservas.ReservasController ..> java.time.LocalDate
+Reservas.ReservasController ..> javafx.collections.FXCollections
+Reservas.ReservasController ..> javafx.collections.ObservableList
+Reservas.ReservasController ..> javafx.scene.control.DatePicker
+Reservas.ReservasController ..> javafx.scene.control.TableColumn
+Reservas.ReservasController ..> javafx.scene.control.TableView
+Reservas.ReservasController ..> javafx.scene.control.TextField
+Reservas.ReservasMain ..> java.lang.Override
+Reservas.ReservasMain ..> java.io.IOException
+Reservas.ReservasMain --|> javafx.application.Application
+Reservas.ReservasMain ..> javafx.fxml.FXMLLoader
+Reservas.ReservasMain ..> javafx.scene.Parent
+Reservas.ReservasMain ..> javafx.scene.Scene
+Reservas.ReservasMain ..> javafx.scene.control.Alert
+Reservas.ReservasMain ..> javafx.stage.Stage
+Reservas.ReservasMain ..> utilidades.UsuarioInfo
+RestoreHotelRural.RestoreDataBaseCont ..> javafx.fxml.FXML
+RestoreHotelRural.RestoreDataBaseCont ..> BBDDRural.RestoreDatabase
+RestoreHotelRural.RestoreDataBaseCont ..> java.io.File
+RestoreHotelRural.RestoreDataBaseCont ..> javafx.scene.control.Alert
+RestoreHotelRural.RestoreDataBaseCont ..> javafx.scene.control.Alert.AlertType
+RestoreHotelRural.RestoreDataBaseCont ..> javafx.stage.FileChooser
+RestoreHotelRural.RestoreDatabase ..> java.io.IOException
+RestoreHotelRural.RestoreDatabaseMain ..> java.lang.Override
+RestoreHotelRural.RestoreDatabaseMain --|> javafx.application.Application
+RestoreHotelRural.RestoreDatabaseMain ..> javafx.fxml.FXMLLoader
+RestoreHotelRural.RestoreDatabaseMain ..> javafx.scene.Parent
+RestoreHotelRural.RestoreDatabaseMain ..> javafx.scene.Scene
+RestoreHotelRural.RestoreDatabaseMain ..> javafx.stage.Stage
+Utilidades.MensajeError ..> javafx.scene.control.Alert
+Utilidades.MensajeError ..> javafx.scene.control.Alert.AlertType
+Utilidades.ReservaInfo ..> java.math.BigDecimal
+Utilidades.ReservaInfo ..> java.util.Date
+utilidades.BDUtilidades ..> Utilidades.HabitacionInfo
+utilidades.BDUtilidades ..> Utilidades.MensajeError
+utilidades.BDUtilidades ..> Utilidades.ReservaInfo
+utilidades.BDUtilidades ..> java.math.BigDecimal
+utilidades.BDUtilidades ..> java.sql.Connection
+utilidades.BDUtilidades ..> java.sql.PreparedStatement
+utilidades.BDUtilidades ..> java.sql.ResultSet
+utilidades.BDUtilidades ..> java.sql.SQLException
+utilidades.BDUtilidades ..> java.time.LocalDate
+utilidades.BDUtilidades ..> java.util.ArrayList
+utilidades.BDUtilidades ..> java.util.List
+utilidades.BDUtilidades ..> java.util.Properties
+utilidades.BDUtilidades ..> javafx.scene.control.Alert.AlertType
+utilidades.ConfigLoader ..> java.io.IOException
+utilidades.ConfigLoader ..> java.io.InputStream
+utilidades.ConfigLoader ..> java.util.Properties
+utilidades.DataSourceManager ..> com.zaxxer.hikari.HikariConfig
+utilidades.DataSourceManager ..> com.zaxxer.hikari.HikariDataSource
+utilidades.DataSourceManager ..> java.sql.Connection
+utilidades.DataSourceManager ..> java.sql.SQLException
+utilidades.DataSourceManager ..> java.util.Properties
+@enduml

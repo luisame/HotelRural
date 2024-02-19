@@ -1,0 +1,49 @@
+@startuml
+class Clientes.ClientesClass
+class Clientes.ClientesControllerNuevo
+class Clientes.ClientesMain
+class Inicio.InicioMain
+class java.io.IOException
+class java.sql.Connection
+class java.sql.PreparedStatement
+class java.sql.ResultSet
+class java.sql.SQLException
+class javafx.application.Application
+class javafx.event.ActionEvent
+class javafx.fxml.FXMLLoader
+class javafx.scene.Node
+class javafx.scene.Parent
+class javafx.scene.Scene
+class javafx.scene.control.Alert
+class javafx.scene.control.Alert.AlertType
+class javafx.scene.control.Button
+class javafx.scene.control.TabPane
+class javafx.scene.control.TableView
+class javafx.scene.control.TextField
+class javafx.stage.Stage
+class utilidades.DataSourceManager
+class utilidades.UsuarioInfo
+Clientes.ClientesControllerNuevo ..> Inicio.InicioMain
+Clientes.ClientesControllerNuevo ..> java.sql.Connection
+Clientes.ClientesControllerNuevo ..> java.sql.PreparedStatement
+Clientes.ClientesControllerNuevo ..> java.sql.ResultSet
+Clientes.ClientesControllerNuevo ..> java.sql.SQLException
+Clientes.ClientesControllerNuevo ..> javafx.event.ActionEvent
+Clientes.ClientesControllerNuevo ..> javafx.scene.Node
+Clientes.ClientesControllerNuevo ..> javafx.scene.control.Alert
+Clientes.ClientesControllerNuevo ..> javafx.scene.control.Alert.AlertType
+Clientes.ClientesControllerNuevo ..> javafx.scene.control.Button
+Clientes.ClientesControllerNuevo ..> javafx.scene.control.TabPane
+Clientes.ClientesControllerNuevo ..> javafx.scene.control.TableView
+Clientes.ClientesControllerNuevo ..> javafx.scene.control.TextField
+Clientes.ClientesControllerNuevo ..> javafx.stage.Stage
+Clientes.ClientesControllerNuevo ..> utilidades.DataSourceManager
+Clientes.ClientesControllerNuevo ..> utilidades.UsuarioInfo
+Clientes.ClientesMain ..> java.io.IOException
+Clientes.ClientesMain ..> javafx.fxml.FXMLLoader
+Clientes.ClientesMain ..> javafx.scene.Parent
+Clientes.ClientesMain ..> javafx.scene.Scene
+Clientes.ClientesMain ..> javafx.scene.control.Alert
+Clientes.ClientesMain ..> javafx.stage.Stage
+Clientes.ClientesMain ..> utilidades.UsuarioInfo
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+annotation java.lang.Override
+annotation javafx.fxml.FXML
+class Administracion.AdministracionController
+class Administracion.AdministracionMain
+class java.io.IOException
+class java.util.logging.Level
+class java.util.logging.Logger
+class javafx.application.Application
+class javafx.event.ActionEvent
+class javafx.fxml.FXMLLoader
+class javafx.scene.Parent
+class javafx.scene.Scene
+class javafx.stage.Stage
+class utilidades.UsuarioInfo
+Administracion.AdministracionController ..> javafx.fxml.FXML
+Administracion.AdministracionController ..> javafx.event.ActionEvent
+Administracion.AdministracionController ..> javafx.stage.Stage
+Administracion.AdministracionController ..> utilidades.UsuarioInfo
+Administracion.AdministracionMain ..> java.lang.Override
+Administracion.AdministracionMain ..> java.io.IOException
+Administracion.AdministracionMain ..> java.util.logging.Level
+Administracion.AdministracionMain ..> java.util.logging.Logger
+Administracion.AdministracionMain --|> javafx.application.Application
+Administracion.AdministracionMain ..> javafx.fxml.FXMLLoader
+Administracion.AdministracionMain ..> javafx.scene.Parent
+Administracion.AdministracionMain ..> javafx.scene.Scene
+Administracion.AdministracionMain ..> javafx.stage.Stage
+Administracion.AdministracionMain ..> utilidades.UsuarioInfo
+@enduml

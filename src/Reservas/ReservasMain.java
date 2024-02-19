@@ -30,7 +30,7 @@ public class ReservasMain extends Application {
                 showNoAccessAlert();
             }
         } else {
-            System.err.println("La información del usuario no se ha establecido.");
+            System.err.println("La informaciÃ³n del usuario no se ha establecido.");
         }
     }
 
@@ -45,10 +45,10 @@ public class ReservasMain extends Application {
 
     public void launchReservas(Stage stage) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ReservasFXML.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("DisponibilidadFXML.fxml"));
             Parent root = loader.load();
 
-            ReservasController controller = loader.getController();
+            DisponibilidadController controller = loader.getController();
             controller.setUsuarioInfo(usuarioInfo);
 
             Scene scene = new Scene(root);
