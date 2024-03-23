@@ -12,8 +12,14 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Reservas.ReservaController" stylesheets="@DisponibilidadCCS.css">
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Reservas.ReservaController" stylesheets="@DisponibilidadCCS.css">
+    
     <VBox spacing="20" alignment="CENTER" style="-fx-padding: 20px;">
+        <HBox spacing="10" alignment="TOP_RIGHT">
+            <Button text="Cerrar" onAction="#volverAlInicio" styleClass="button-volver" />
+        </HBox>
+        
         <Label text="Creación de Reserva" styleClass="header-label"/>
         
         <HBox spacing="20" alignment="CENTER">
@@ -35,12 +41,23 @@
            <VBox>
     <!-- Aquí van los campos de detalles de la habitación seleccionada -->
     
-    <TableView fx:id="tablaHabitacionesDisponibles" prefHeight="100">
+   <TableView fx:id="tablaHabitacionesReservadas" prefHeight="100">
     <columns>
-        <TableColumn fx:id="columnaIDHabitacion" text="ID Habitación" prefWidth="100"/>
-        <TableColumn fx:id="columnaDescripcion" text="Descripción" prefWidth="200"/>
-        <TableColumn fx:id="columnaCapacidad" text="Capacidad" prefWidth="100"/>
-        <TableColumn fx:id="columnaEstado" text="Estado" prefWidth="100"/>
+        <TableColumn fx:id="columnaDescripcion" text="Descripción" prefWidth="200">
+            <cellValueFactory>
+                <PropertyValueFactory property="descripcion"/>
+            </cellValueFactory>
+        </TableColumn>
+        <TableColumn fx:id="columnaCapacidad" text="Capacidad" prefWidth="100">
+            <cellValueFactory>
+                <PropertyValueFactory property="capacidad"/>
+            </cellValueFactory>
+        </TableColumn>
+        <TableColumn fx:id="columnaEstado" text="Estado" prefWidth="100">
+            <cellValueFactory>
+                <PropertyValueFactory property="estado"/>
+            </cellValueFactory>
+        </TableColumn>
     </columns>
 </TableView>
 
@@ -80,5 +97,7 @@
         </GridPane>
         
         <Button text="Crear Reserva" onAction="#crearReserva"/>
+        
+
     </VBox>
 </AnchorPane>

@@ -4,22 +4,22 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" fx:id="rootPane" prefHeight="416.0" prefWidth="573.0" stylesheets="/Inicio/InicioCCS.css" xmlns="http://javafx.com/javafx/17.0.8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Inicio.InicioController">
-
+<AnchorPane id="AnchorPane" fx:id="rootPane" prefHeight="446.0" prefWidth="607.0" stylesheets="/Inicio/InicioCCS.css" xmlns="http://javafx.com/javafx/17.0.8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Inicio.InicioController">
     <children>
-<Button fx:id="btnAdministracion" layoutX="40.0" layoutY="50.0" onAction="#handleBtnAdministracion" prefHeight="127.0" prefWidth="156.0" styleClass="ButtonStyle ButtonNormal" text="Administración" />
-<Button fx:id="btnClientes" layoutX="235.0" layoutY="50.0" onAction="#handleBtnClientes" prefHeight="127.0" prefWidth="156.0" styleClass="ButtonStyle ButtonHover" text="Clientes" />
-<Button fx:id="btnHabitaciones" layoutX="40.0" layoutY="200.0" onAction="#handleBtnHabitaciones" prefHeight="127.0" prefWidth="156.0" styleClass="ButtonStyle ButtonPressed" text="Habitaciones" />
-<Button fx:id="btnReservas" layoutX="235.0" layoutY="200.0" onAction="#handleBtnReservas" prefHeight="127.0" prefWidth="156.0" styleClass="ButtonStyle ButtonNormal" text="Reservas" />
-
-
-
+        <Label fx:id="bienvenida" layoutX="221.0" layoutY="10.0" styleClass="bienvenida" text="Bienvenido, Pepe Luis" />
+<!-- Instrucción para el uso del menú -->
+        <Label fx:id="instruccionesMenu" layoutX="118.0" layoutY="53.0" prefHeight="18.0" prefWidth="362.0" styleClass="instruccionesMenuLabel" text="Seleccione una opción haciendo clic en uno de los botones" textAlignment="CENTER" />
+        <Button fx:id="btnAdministracion" layoutX="40.0" layoutY="103.0" onAction="#handleBtnAdministracion" prefHeight="127.0" prefWidth="156.0" styleClass="ButtonStyle ButtonNormal" text="Administración" />
+        <Button fx:id="btnClientes" layoutX="311.0" layoutY="103.0" onAction="#handleBtnClientes" prefHeight="127.0" prefWidth="156.0" styleClass="ButtonStyle ButtonHover" text="Clientes" />
+        <Button fx:id="btnHabitaciones" layoutX="40.0" layoutY="265.0" onAction="#handleBtnHabitaciones" prefHeight="127.0" prefWidth="156.0" styleClass="ButtonStyle ButtonPressed" text="Habitaciones" />
+        <Button fx:id="btnReservas" layoutX="311.0" layoutY="265.0" onAction="#handleBtnReservas" prefHeight="127.0" prefWidth="156.0" styleClass="ButtonStyle ButtonNormal" text="Reservas" />
 
         <!-- Etiquetas para mostrar nombre y apellido -->
         <Label fx:id="etiquetaNombre" layoutX="40.0" layoutY="350.0" prefWidth="200" />
         <Label fx:id="etiquetaApellido" layoutX="250.0" layoutY="350.0" prefWidth="200" />
-        <Label fx:id="nombreUsuarioLabel" layoutX="40.0" layoutY="15" prefWidth="200" /> <!-- Agregada la etiqueta nombreUsuarioLabel -->
+        <Label fx:id="nombreUsuarioLabel" layoutX="179.0" layoutY="10.0" prefWidth="200" /> <!-- Agregada la etiqueta nombreUsuarioLabel -->
+
         <!-- Exit -->
-      <Button fx:id="btnExit" layoutX="450.0" layoutY="10.0" onAction="#handleBtnExit" prefHeight="63.0" prefWidth="66.0" styleClass="ButtonStyle ButtonExit" text="Exit" />
+        <Button fx:id="btnExit" layoutX="531.0" layoutY="26.0" onAction="#handleBtnExit" prefHeight="53.0" prefWidth="56.0" styleClass="ButtonStyle ButtonExit" text="Exit" />
     </children>
 </AnchorPane>

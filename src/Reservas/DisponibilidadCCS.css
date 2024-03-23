@@ -1,28 +1,42 @@
+/* Estilos generales para botones */
+.button {
+    -fx-background-color: #0078d7; /* Color de fondo del botón */
+    -fx-text-fill: white; /* Color del texto */
+    -fx-border-radius: 5; /* Bordes redondeados */
+    -fx-background-radius: 5; /* Radio del borde del fondo */
+    -fx-padding: 10; /* Padding dentro del botón */
+}
 
-/*Estilo para la cabecera*/
+.button:hover {
+    -fx-background-color: #005a9e; /* Color de fondo del botón al pasar el ratón */
+}
+
+/* Estilo específico para el botón Limpiar Formulario */
+.button-limpiar {
+    -fx-background-color: #e67e22; /* Color de fondo diferente para 'Limpiar Formulario' */
+}
+
+.button-limpiar:hover {
+    -fx-background-color: #d35400; /* Color de fondo del botón al pasar el ratón */
+}
+
+/* Estilo específico para el botón Volver al Inicio */
+.button-volver {
+    -fx-background-color: #CC0000; /* Color de fondo diferente para 'Volver al Inicio' */
+}
+
+.button-volver:hover {
+    -fx-background-color: #FF6347; /* Color de fondo del botón al pasar el ratón */
+}
+
+/* Estilo para la cabecera */
 .header-label {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
-    -fx-text-alignment: center;
-    
 }
 
-/* Estilo para el botón de cierre */
-.button-cerrar {
-    -fx-background-color: #CC0000; /* Rojo oscuro */
-    -fx-text-fill: #bbbbbb; /* Color de texto negro */
-    -fx-font-weight: bold; /* Fuente en negrita */
-    -fx-padding: 10px; /* Espaciado interno */
-    -fx-font-size: 14px; /* Tamaño de fuente */
-    -fx-border-radius: 4px; /* Radio de los bordes */
-    -fx-cursor: hand;
-}
+/* Estilos adicionales si son necesarios... */
 
-/* Cambio de estilo al pasar el mouse por encima */
-.button-cerrar:hover {
-    -fx-background-color: rgba(56, 142, 60, 0.8); /* Color de fondo verde claro con transparencia */
-    -fx-text-fill: #E0E0E0; /* Color de texto blanco */
-}
 
 /* Estilo para los botones en las pestañas */
 .tab-pane .button {

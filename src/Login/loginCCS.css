@@ -17,6 +17,7 @@
 }
 
 .login-button {
+    
     -fx-background-color: #4CAF50;
     -fx-text-fill: white;
     -fx-pref-width: 100px;
@@ -30,4 +31,12 @@
 
 .login-button:pressed {
     -fx-background-color: #3e8e41;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+
+}
+.progress-indicator:indeterminate {
+   .progress-indicator:indeterminate {
+    -fx-progress-color: blue;
+}
+
 }

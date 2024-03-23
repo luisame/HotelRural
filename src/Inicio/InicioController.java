@@ -4,17 +4,20 @@ import Administracion.AdministracionMain;
 import Habitaciones.HabitacionesMain;
 import Clientes.ClientesMain;
 import Reservas.ReservasMain;
+import java.util.Optional;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import utilidades.UsuarioInfo;
 
 public class InicioController {
-    @FXML
-    private Label nombreUsuarioLabel;
+    /*@FXML
+    private Label nombreUsuarioLabel;*/
 
     @FXML
     private Button btnHabitaciones;
@@ -25,17 +28,17 @@ public class InicioController {
     @FXML
     private Button btnAdministracion;
 
-    @FXML
-    private Button btnReservas;
+    /*@FXML
+    private Button btnReservas;*/
 
     @FXML
     private Button btnExit;
 
-    @FXML
-    private Label etiquetaNombre;
+    /*@FXML
+    private Label etiquetaNombre;*/
 
-    @FXML
-    private Label etiquetaApellido;
+    /*@FXML
+    private Label etiquetaApellido;*/
 
     public  UsuarioInfo usuarioInfo;
      public void setUsuarioInfo(UsuarioInfo usuarioInfo) {
@@ -47,12 +50,13 @@ public class InicioController {
         this.usuarioInfo = usuarioInfo;
         System.out.println("UsuarioInfo: "+ usuarioInfo);
         Platform.runLater(() -> {
-            nombreUsuarioLabel.setText("Bienvenido, " + usuarioInfo.getNombreEmpleado());
-            etiquetaNombre.setText(usuarioInfo.getNombreEmpleado());
-            etiquetaApellido.setText(usuarioInfo.getApellidoEmpleado());
+    
+    
+});
+
             
             
-        });
+ 
     }
 
     @FXML
@@ -93,10 +97,29 @@ public class InicioController {
     }
 
     @FXML
-    private void handleBtnExit(ActionEvent event) {
+   private void handleBtnExit(ActionEvent event) {
+    // Crear una alerta de confirmación
+    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    alert.setTitle("Confirmar Salida");
+    alert.setHeaderText(null); // Puedes poner aquí un texto de cabecera si lo deseas
+    alert.setContentText("¿Estás seguro de que quieres salir?");
+
+    // Personalización del botón
+    ButtonType buttonTypeYes = new ButtonType("Sí", ButtonBar.ButtonData.YES);
+    ButtonType buttonTypeNo = new ButtonType("No", ButtonBar.ButtonData.NO);
+
+    // Añadir botones al cuadro de diálogo
+    alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+
+    // Capturar la respuesta del usuario
+    Optional<ButtonType> result = alert.showAndWait();
+    if (result.isPresent() && result.get() == buttonTypeYes) {
         Stage stage = (Stage) btnExit.getScene().getWindow();
         stage.close();
     }
+    // Si el usuario selecciona "No", simplemente se cierra el cuadro de diálogo y no sucede nada más.
+}
+
 
     private void closeCurrentStage(ActionEvent event) {
         Stage currentStage = (Stage) ((Button) event.getSource()).getScene().getWindow();

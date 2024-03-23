@@ -8,10 +8,6 @@ package Reservas;
  *
  * @author luisa
  */
-class IOException {
-
-    void printStackTrace() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+class LOGGER {
     
 }

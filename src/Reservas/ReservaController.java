@@ -1,11 +1,11 @@
 package Reservas;
 
+import Inicio.InicioController;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -16,14 +16,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import utilidades.DataSourceManager;
+import utilidades.UsuarioInfo;
 
 public class ReservaController {
 
@@ -43,46 +44,55 @@ public class ReservaController {
     @FXML private TextField capacidadField;
     @FXML private TextField estadoField;
     @FXML private TextField numPersonasField;
-    @FXML private TableView<Habitacion> tablaHabitacionesDisponibles;
+     @FXML
+    private TableView<Habitacion> tablaHabitacionesReservadas;
+    @FXML
+    private TableColumn<Habitacion, String> columnaDescripcion;
+    @FXML
+    private TableColumn<Habitacion, Integer> columnaCapacidad;
+    @FXML
+    private TableColumn<Habitacion, String> columnaEstado;
     // Este método se llamaría para cargar los datos en la tabla
 
      @FXML
     public void initialize() {
-        inicializarTablaHabitaciones();
-        configurarListenersDatosCliente();
-    }
+    configurarListenersDatosCliente();
+    
+    // Configurar el CellValueFactory para cada columna
+    columnaDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+    columnaCapacidad.setCellValueFactory(new PropertyValueFactory<>("capacidad"));
+    columnaEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
+    
+    // Crear las columnas y configurar el CellValueFactory
+    TableColumn<Habitacion, String> descripcionColumn = new TableColumn<>("Descripción");
+    descripcionColumn.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
 
-    // Método para inicializar la tabla habitaciones
-    private void inicializarTablaHabitaciones() {
-        TableColumn<Habitacion, Integer> idColumn = new TableColumn<>("ID");
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+    TableColumn<Habitacion, Integer> capacidadColumn = new TableColumn<>("Capacidad");
+    capacidadColumn.setCellValueFactory(new PropertyValueFactory<>("capacidad"));
 
-        TableColumn<Habitacion, String> descripcionColumn = new TableColumn<>("Descripción");
-        descripcionColumn.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+    TableColumn<Habitacion, String> estadoColumn = new TableColumn<>("Estado");
+    estadoColumn.setCellValueFactory(new PropertyValueFactory<>("estado"));
 
-        TableColumn<Habitacion, Integer> capacidadColumn = new TableColumn<>("Capacidad");
-        capacidadColumn.setCellValueFactory(new PropertyValueFactory<>("capacidad"));
+    // Agregar las columnas a la tabla
+    tablaHabitacionesReservadas.getColumns().addAll(descripcionColumn, capacidadColumn, estadoColumn);
 
-        TableColumn<Habitacion, String> estadoColumn = new TableColumn<>("Estado");
-        estadoColumn.setCellValueFactory(new PropertyValueFactory<>("estado"));
+    tablaHabitacionesReservadas.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+        if (newSelection != null) {
+            mostrarDatosHabitacionSeleccionada(newSelection);
+        }
+    });
+}
 
-        tablaHabitacionesDisponibles.getColumns().addAll(idColumn, descripcionColumn, capacidadColumn, estadoColumn);
-
-        tablaHabitacionesDisponibles.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                mostrarDatosHabitacionSeleccionada(newSelection);
-            }
-        });
-    }
 
     // Método para cargar los datos en la tabla
-    public void cargarDatosEnTabla(List<Habitacion> listaHabitaciones) {
-        ObservableList<Habitacion> habitaciones = FXCollections.observableArrayList(listaHabitaciones);
-        tablaHabitacionesDisponibles.setItems(habitaciones);
-    }
+    public void cargarDatosHabitacion(Habitacion habitacion) {
+    ObservableList<Habitacion> habitacionesReservadas = FXCollections.observableArrayList();
+    habitacionesReservadas.add(habitacion); // Añadir la habitación seleccionada a la lista
+    tablaHabitacionesReservadas.setItems(habitacionesReservadas); // Establecer los datos en la tabla
+}
+
 
     public void mostrarDatosHabitacionSeleccionada(Habitacion habitacionSeleccionada) {
-        idHabitacionField.setText(String.valueOf(habitacionSeleccionada.getId()));
         descripcionField.setText(habitacionSeleccionada.getDescripcion());
         capacidadField.setText(String.valueOf(habitacionSeleccionada.getCapacidad()));
         estadoField.setText(habitacionSeleccionada.getEstado());
@@ -303,6 +313,31 @@ private int obtenerIdCliente() {
         }
     }
     return idCliente;
+}
+@FXML
+private void volverAlInicio(ActionEvent event) {
+    try {
+        // Carga el archivo FXML para la ventana de inicio
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Inicio/InicioFXML.fxml"));
+        Parent root = loader.load();
+
+        // Aquí es donde pasamos la información del usuario al controlador de inicio
+        InicioController inicioController = loader.getController();
+        UsuarioInfo usuarioInfo = null;
+        inicioController.setUsuarioInfo(usuarioInfo); // Suponiendo que tienes un método setUsuarioInfo en InicioController
+
+        // Obtiene la escena actual y cierra la ventana
+        Stage stageActual = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stageActual.close();
+
+        // Crea una nueva etapa para la ventana de inicio
+        Stage stageInicio = new Stage();
+        stageInicio.setTitle("Inicio");
+        stageInicio.setScene(new Scene(root));
+        stageInicio.show();
+    } catch (java.io.IOException e) {
+        e.printStackTrace();
+    }
 }
 
 // Método para mostrar alertas

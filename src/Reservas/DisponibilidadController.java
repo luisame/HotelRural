@@ -1,11 +1,14 @@
 package Reservas;
 
+import Inicio.InicioController;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,9 +18,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -34,30 +39,35 @@ public class DisponibilidadController {
     private TextField numeroPersonas;
     @FXML
     private TableView<Habitacion> tablaHabitacionesDisponibles;
-    private UsuarioInfo usuarioInfo;
     @FXML
     private Label descripcionHabitacionLabel;
+    @FXML
+    private Label labelPrecioTotal;
 
-    public void setDescripcionHabitacion(String descripcion) {
-        descripcionHabitacionLabel.setText(descripcion);
+    private UsuarioInfo usuarioInfo;
+    private ReservaController reservaController;
+
+    public void setUsuarioInfo(UsuarioInfo usuarioInfo) {
+        this.usuarioInfo = usuarioInfo;
+    }
+
+    public void setReservaController(ReservaController reservaController) {
+        this.reservaController = reservaController;
     }
 
     @FXML
     public void initialize() {
-        // Configurar el DatePicker de fecha de inicio
         fechaInicio.setDayCellFactory(picker -> new DateCell() {
             @Override
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
                 setDisable(empty || date.isBefore(LocalDate.now()));
                 if (date.equals(LocalDate.now())) {
-                    // Si el día seleccionado es hoy, mostrarlo en verde
                     setStyle("-fx-background-color: lightgreen;");
                 }
             }
         });
 
-        // Añadir listener a la selección de la tabla de habitaciones disponibles
         tablaHabitacionesDisponibles.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 LocalDate fechaInicioValue = fechaInicio.getValue();
@@ -68,37 +78,42 @@ public class DisponibilidadController {
         });
     }
 
-private ReservaController reservaController;
-
-public void setReservaController(ReservaController reservaController) {
-    this.reservaController = reservaController;
-}
-
-@FXML
-private void handleTablaHabitacionesDisponiblesMouseClicked(MouseEvent event) {
-    if (event.getClickCount() == 1) {
-        Habitacion habitacionSeleccionada = tablaHabitacionesDisponibles.getSelectionModel().getSelectedItem();
-        if (habitacionSeleccionada != null && reservaController != null) {
-            reservaController.mostrarDatosHabitacionSeleccionada(habitacionSeleccionada);
-        }
+    @FXML
+    private void limpiarFormulario(ActionEvent event) {
+        fechaInicio.setValue(null);
+        fechaFin.setValue(null);
+        numeroPersonas.clear();
+        tablaHabitacionesDisponibles.getSelectionModel().clearSelection();
     }
-}
 
-    private void mostrarFXMLReservas(Habitacion habitacionSeleccionada, LocalDate fechaEntrada, LocalDate fechaSalida,
-            int numPersonas) {
+    @FXML
+    private void volverAlInicio(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Reservas/ReservaFXML.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Inicio/InicioFXML.fxml"));
             Parent root = loader.load();
 
-            ReservaController controller = loader.getController();
-            controller.prepararDatosDeReserva(fechaEntrada, fechaSalida, numPersonas);
+            InicioController inicioController = loader.getController();
+            inicioController.setUsuarioInfo(usuarioInfo);
 
-            Stage stage = new Stage();
-            stage.setTitle("Detalles de la Reserva");
-            stage.setScene(new Scene(root));
-            stage.show();
+            Stage stageActual = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            stageActual.close();
+
+            Stage stageInicio = new Stage();
+            stageInicio.setTitle("Inicio");
+            stageInicio.setScene(new Scene(root));
+            stageInicio.show();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleTablaHabitacionesDisponiblesMouseClicked(MouseEvent event) {
+        if (event.getClickCount() == 1) {
+            Habitacion habitacionSeleccionada = tablaHabitacionesDisponibles.getSelectionModel().getSelectedItem();
+            if (habitacionSeleccionada != null && reservaController != null) {
+                reservaController.mostrarDatosHabitacionSeleccionada(habitacionSeleccionada);
+            }
         }
     }
 
@@ -107,7 +122,6 @@ private void handleTablaHabitacionesDisponiblesMouseClicked(MouseEvent event) {
         LocalDate inicio = fechaInicio.getValue();
         LocalDate fin = fechaFin.getValue();
         int numPersonas = 0;
-
         try {
             numPersonas = Integer.parseInt(numeroPersonas.getText());
         } catch (NumberFormatException e) {
@@ -119,71 +133,56 @@ private void handleTablaHabitacionesDisponiblesMouseClicked(MouseEvent event) {
             mostrarAlerta("Error", "Por favor, seleccione las fechas de inicio y fin.");
             return;
         }
-
         if (inicio.isAfter(fin)) {
             mostrarAlerta("Error", "La fecha de inicio no puede ser posterior a la fecha de fin.");
             return;
         }
 
-        // Utilizar el método para buscar habitaciones disponibles
         ObservableList<Habitacion> habitacionesDisponibles = buscarHabitacionesDisponibles(inicio, fin, numPersonas);
-
-        // Establecer los resultados en la tabla
         tablaHabitacionesDisponibles.setItems(habitacionesDisponibles);
+        
     }
 
-    private ObservableList<Habitacion> buscarHabitacionesDisponibles(LocalDate inicio, LocalDate fin,
-            int numPersonas) {
-        ObservableList<Habitacion> habitacionesDisponibles = FXCollections.observableArrayList();
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
+   private ObservableList<Habitacion> buscarHabitacionesDisponibles(LocalDate inicio, LocalDate fin, int numPersonas) {
+    ObservableList<Habitacion> habitacionesDisponibles = FXCollections.observableArrayList();
+// Calcular el precio total
+    BigDecimal precioTotal = BigDecimal.ZERO;
+    for (Habitacion habitacion : habitacionesDisponibles) {
+        precioTotal = precioTotal.add(habitacion.getPrecio());
+    }
 
-        try {
-            // Obtener conexión desde el DataSourceManager
-            conn = DataSourceManager.getConnection();
+    // Establecer el texto del precio total en el label correspondiente
+    labelPrecioTotal.setText("Precio Total: $" + precioTotal.toString());
 
-            // Consulta SQL para obtener habitaciones disponibles
-            String query = "SELECT * FROM habitaciones WHERE estado = 'Libre' AND capacidad >= ? "
-                    + "AND id_habitacion NOT IN (SELECT id_habitacion FROM reservas "
-                    + "WHERE ? BETWEEN FechaEntrada AND FechaSalida OR ? BETWEEN FechaEntrada AND FechaSalida)";
-            stmt = conn.prepareStatement(query);
-            stmt.setInt(1, numPersonas);
-            stmt.setDate(2, java.sql.Date.valueOf(inicio));
-            stmt.setDate(3, java.sql.Date.valueOf(fin));
+    try (Connection conn = DataSourceManager.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(
+                 "SELECT id_habitacion, descripcion, capacidad, estado, precio " +
+                         "FROM habitaciones " +
+                         "WHERE estado = 'Libre' AND capacidad >= ? " +
+                         "AND NOT EXISTS (SELECT 1 FROM reservas WHERE habitaciones.id_habitacion = reservas.id_habitacion " +
+                         "AND (? BETWEEN FechaEntrada AND FechaSalida OR ? BETWEEN FechaEntrada AND FechaSalida))")) {
 
-            rs = stmt.executeQuery();
+        stmt.setInt(1, numPersonas);
+        stmt.setDate(2, java.sql.Date.valueOf(inicio));
+        stmt.setDate(3, java.sql.Date.valueOf(fin));
 
-            // Procesar los resultados y crear objetos Habitacion
+        try (ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                int id = rs.getInt("id_habitacion");
-                String descripcion = rs.getString("descripcion");
-                int capacidad = rs.getInt("capacidad");
-                String estado = rs.getString("estado");
-                Habitacion habitacion = new Habitacion(id, descripcion, capacidad, estado);
+                Habitacion habitacion = new Habitacion(
+                        rs.getInt("id_habitacion"),
+                        rs.getString("descripcion"),
+                        rs.getInt("capacidad"),
+                        rs.getString("estado"),
+                        rs.getBigDecimal("precio"));
                 habitacionesDisponibles.add(habitacion);
-
-
-                habitacionesDisponibles.add(habitacion);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            // Cerrar recursos
-            try {
-                if (rs != null)
-                    rs.close();
-                if (stmt != null)
-                    stmt.close();
-                if (conn != null)
-                    conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
         }
-
-        return habitacionesDisponibles;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+
+    return habitacionesDisponibles;
+}
 
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alerta = new Alert(Alert.AlertType.WARNING);
@@ -193,44 +192,21 @@ private void handleTablaHabitacionesDisponiblesMouseClicked(MouseEvent event) {
         alerta.showAndWait();
     }
 
-    public void setUsuarioInfo(UsuarioInfo usuarioInfo) {
-        this.usuarioInfo = usuarioInfo;
-    }
+    private void mostrarFXMLReservas(Habitacion habitacionSeleccionada, LocalDate fechaEntrada, LocalDate fechaSalida,
+                                      int numPersonas) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Reservas/ReservaFXML.fxml"));
+            Parent root = loader.load();
 
-    @FXML
-    private void seleccionarHabitacion() {
-        Habitacion habitacionSeleccionada = tablaHabitacionesDisponibles.getSelectionModel().getSelectedItem();
-
-        if (habitacionSeleccionada != null) {
-            LocalDate fechaInicioValue = fechaInicio.getValue();
-            LocalDate fechaFinValue = fechaFin.getValue();
-            int numPersonasValue = Integer.parseInt(numeroPersonas.getText());
-            mostrarFXMLReservas(habitacionSeleccionada, fechaInicioValue, fechaFinValue, numPersonasValue);
+            ReservaController controller = loader.getController();
+            controller.prepararDatosDeReserva(fechaEntrada, fechaSalida, numPersonas);
+            controller.cargarDatosHabitacion(habitacionSeleccionada);
+            Stage stage = new Stage();
+            stage.setTitle("Detalles de la Reserva");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
-    
-    @FXML
-private void crearReserva(ActionEvent event) throws IOException {
-    LocalDate fechaInicioVal = fechaInicio.getValue();
-    LocalDate fechaFinVal = fechaFin.getValue();
-    int numPersonasVal;
-    try {
-        numPersonasVal = Integer.parseInt(numeroPersonas.getText()); // Convierte el texto a entero
-    } catch (NumberFormatException e) {
-        mostrarAlerta("Error de Entrada", "El número de personas debe ser un entero válido.");
-        return; // Salir del método si la conversión falla
-    }
-
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/Reservas/ReservasFXML.fxml"));
-    Parent root = loader.load();
-    ReservaController reservaController = loader.getController();
-    // Ahora se pasan los valores extraídos y convertidos
-    reservaController.initData(fechaInicioVal, fechaFinVal, numPersonasVal);
-
-    Stage stage = new Stage();
-    stage.setTitle("Crear Reserva");
-    stage.setScene(new Scene(root));
-    stage.show();
 }
-}
-
