@@ -9,20 +9,24 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Habitacion {
+    // Atributos de la clase Habitacion
     private final IntegerProperty id;
     private final StringProperty descripcion;
     private final IntegerProperty capacidad;
     private final StringProperty estado;
-    private ObjectProperty<BigDecimal> precioPorNoche;
+    private ObjectProperty<BigDecimal> precioPorNoche; // Propiedad para el precio por noche
+    private BigDecimal precioTotal; // Precio total de la estancia
 
-    public Habitacion(int id, String descripcion, int capacidad, String estado, BigDecimal precioPorNoche) {
+    // Constructor de la clase Habitacion
+    public Habitacion(int id, String descripcion, int capacidad, String estado, BigDecimal precio) {
         this.id = new SimpleIntegerProperty(id);
         this.descripcion = new SimpleStringProperty(descripcion);
         this.capacidad = new SimpleIntegerProperty(capacidad);
         this.estado = new SimpleStringProperty(estado);
-        this.precioPorNoche = new SimpleObjectProperty<>(precioPorNoche);
+        this.precioPorNoche = new SimpleObjectProperty<>(precio); // Inicialización de la propiedad de precio por noche
     }
 
+    // Getters y setters de los atributos de la clase Habitacion
     public int getId() {
         return id.get();
     }
@@ -70,7 +74,11 @@ public class Habitacion {
     public void setEstado(String estado) {
         this.estado.set(estado);
     }
+public BigDecimal getPrecio() {
+    return getPrecioPorNoche();
+}
 
+    // Getter y setter para la propiedad de precio por noche
     public final ObjectProperty<BigDecimal> precioPorNocheProperty() {
         if (precioPorNoche == null) precioPorNoche = new SimpleObjectProperty<>(this, "precioPorNoche");
         return precioPorNoche;
@@ -84,7 +92,13 @@ public class Habitacion {
         precioPorNocheProperty().set(precioPorNoche);
     }
 
-    public final BigDecimal getPrecio() {
-        return getPrecioPorNoche();
+    // Método para obtener el precio total
+    public final BigDecimal getPrecioTotal() {
+        return precioTotal;
+    }
+
+    // Método para establecer el precio total
+    public void setPrecioTotal(BigDecimal precioTotal) {
+        this.precioTotal = precioTotal;
     }
 }

@@ -1,3 +1,3 @@
 utilidades.BDUtilidades
-utilidades.BDUtilidades$EstadoEnum
 BDUtilidades
+utilidades.BDUtilidades$EstadoEnum

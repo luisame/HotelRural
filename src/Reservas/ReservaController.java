@@ -1,6 +1,9 @@
 package Reservas;
 
 import Inicio.InicioController;
+import Inicio.InicioMain;
+import static Reservas.DisponibilidadController.disponibilidadController;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,11 +16,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -52,7 +57,45 @@ public class ReservaController {
     private TableColumn<Habitacion, Integer> columnaCapacidad;
     @FXML
     private TableColumn<Habitacion, String> columnaEstado;
+     // Variables de control
+    private UsuarioInfo usuarioInfo;
     // Este método se llamaría para cargar los datos en la tabla
+    private int idHabitacion;
+    public Label precioBaseLabel;
+    public Label numPersonasLabel;
+    public Label numNinosLabel;
+    public Label numBebesLabel;
+    public Label suplementoLabel;
+    public Label precioTotalLabel;
+
+    public void setHabitacionId(int idHabitacion) {
+        this.idHabitacion = idHabitacion;
+        
+    }
+    // Métodos setter
+    public void setPrecioBase(BigDecimal precio) {
+        precioBaseLabel.setText(String.format("€%.2f", precio));
+    }
+    
+    public void setNumPersonas(int numPersonas) {
+        numPersonasLabel.setText(String.valueOf(numPersonas));
+    }
+    
+    public void setNumNinos(int numNinos) {
+        numNinosLabel.setText(String.valueOf(numNinos));
+    }
+    
+    public void setNumBebes(int numBebes) {
+        numBebesLabel.setText(String.valueOf(numBebes));
+    }
+    
+   public void setSuplemento(BigDecimal suplemento) {
+    if (suplementoLabel != null) {
+        suplementoLabel.setText(String.format("€%.2f", suplemento));
+    } else {
+        System.err.println("suplementoLabel no está inicializado.");
+    }
+}
 
      @FXML
     public void initialize() {
@@ -80,6 +123,17 @@ public class ReservaController {
         if (newSelection != null) {
             mostrarDatosHabitacionSeleccionada(newSelection);
         }
+        if (tablaHabitacionesReservadas == null) {
+        System.out.println("tablaHabitacionesReservadas es nulo.");
+       
+        // Puedes agregar más mensajes o acciones aquí según sea necesario
+        return;
+    }
+        if (columnaDescripcion == null || columnaCapacidad == null || columnaEstado == null) {
+        System.out.println("Al menos una de las columnas es nula.");
+        // Puedes agregar más mensajes o acciones aquí según sea necesario
+        return;
+        }
     });
 }
 
@@ -89,13 +143,15 @@ public class ReservaController {
     ObservableList<Habitacion> habitacionesReservadas = FXCollections.observableArrayList();
     habitacionesReservadas.add(habitacion); // Añadir la habitación seleccionada a la lista
     tablaHabitacionesReservadas.setItems(habitacionesReservadas); // Establecer los datos en la tabla
-}
+
+    }
 
 
     public void mostrarDatosHabitacionSeleccionada(Habitacion habitacionSeleccionada) {
         descripcionField.setText(habitacionSeleccionada.getDescripcion());
         capacidadField.setText(String.valueOf(habitacionSeleccionada.getCapacidad()));
         estadoField.setText(habitacionSeleccionada.getEstado());
+        System.out.println("Habitacion ID:  "+" " + idHabitacion);
     }
 
     private void configurarListenersDatosCliente() {
@@ -164,18 +220,21 @@ public class ReservaController {
     }
 
 
-    public void prepararDatosDeHabitacion(Habitacion habitacionSeleccionada) {
-        idHabitacionField.setText(String.valueOf(habitacionSeleccionada.getId()));
-        descripcionField.setText(habitacionSeleccionada.getDescripcion());
-        capacidadField.setText(String.valueOf(habitacionSeleccionada.getCapacidad()));
-        estadoField.setText(habitacionSeleccionada.getEstado());
+    // Método para inicializar la vista con los datos de la habitación seleccionada
+   public void iniciarConDatosDeReserva(Habitacion habitacionSeleccionada, LocalDate fechaEntrada, LocalDate fechaSalida, int numPersonas) {
+    if (habitacionSeleccionada != null) {
+      
+    // Actualiza los campos de la interfaz con la información de la reserva
+    fechaEntradaField.setValue(fechaEntrada);
+    fechaSalidaField.setValue(fechaSalida);
+    numPersonasField.setText(String.valueOf(numPersonas));
+// Suponiendo que Habitacion es una clase que tiene las propiedades descripcion, capacidad, y estado.
+    ObservableList<Habitacion> data = FXCollections.observableArrayList(habitacionSeleccionada);
+    tablaHabitacionesReservadas.setItems(data);
     }
+   }
+    
 
-    public void prepararDatosDeReserva(LocalDate fechaEntrada, LocalDate fechaSalida, int numPersonas) {
-        fechaEntradaField.setValue(fechaEntrada);
-        fechaSalidaField.setValue(fechaSalida);
-        numPersonasField.setText(String.valueOf(numPersonas));
-    }
 
     // Continuación desde la parte de initData...
 public void initData(LocalDate fechaInicioVal, LocalDate fechaFinVal, int numPersonas) {
@@ -185,19 +244,24 @@ public void initData(LocalDate fechaInicioVal, LocalDate fechaFinVal, int numPer
 }
 
 public void crearReserva(ActionEvent event) {
+    // Obtener el ID del cliente
     int idCliente = obtenerIdCliente();
+    
+    // Verificar si el ID del cliente es válido
     if (idCliente == -1) {
-        // Si el cliente no existe, crear un nuevo registro en la tabla de clientes
-        // y mostrar un mensaje indicando que el cliente no está registrado.
         mostrarAlerta("Error", "Cliente no registrado. Por favor, verifique el DNI o registre al cliente.");
         return;
     }
-if (idHabitacionField.getText().isEmpty() || numPersonasField.getText().isEmpty()) {
+// Obtener la habitación seleccionada de la tabla
+    Habitacion habitacionSeleccionada = tablaHabitacionesReservadas.getSelectionModel().getSelectedItem();
+    // Verificar si se han completado todos los campos requeridos
+    if (idHabitacionField.getText().isEmpty() || numPersonasField.getText().isEmpty()) {
         mostrarAlerta("Error", "Por favor, complete todos los campos requeridos.");
         return;
     }
-//  obtener los valores numéricos
-    int idHabitacion, numPersonas;
+    
+    // Obtener los valores numéricos
+    int  numPersonas;
     try {
         idHabitacion = Integer.parseInt(idHabitacionField.getText());
         numPersonas = Integer.parseInt(numPersonasField.getText());
@@ -206,19 +270,11 @@ if (idHabitacionField.getText().isEmpty() || numPersonasField.getText().isEmpty(
         return;
     }
 
-    // Prosigue con la obtención del ID del cliente
-     idCliente = obtenerIdCliente();
-    if (idCliente == -1) {
-        mostrarAlerta("Error", "Cliente no registrado. Por favor, verifique el DNI o registre al cliente.");
-        return;
-    }
-
-     idHabitacion = Integer.parseInt(idHabitacionField.getText());
+    // Obtener las fechas de entrada y salida
     LocalDate fechaEntrada = fechaEntradaField.getValue();
     LocalDate fechaSalida = fechaSalidaField.getValue();
-     numPersonas = Integer.parseInt(numPersonasField.getText());
 
-    // la lógica para grabar la reserva en la  base de datos
+    // Conectar a la base de datos y ejecutar la consulta de inserción
     Connection conn = null;
     PreparedStatement pstmt = null;
     try {
@@ -231,6 +287,7 @@ if (idHabitacionField.getText().isEmpty() || numPersonasField.getText().isEmpty(
         pstmt.setDate(4, java.sql.Date.valueOf(fechaSalida));
         pstmt.setInt(5, numPersonas);
         
+        // Ejecutar la consulta de inserción
         int affectedRows = pstmt.executeUpdate();
         if (affectedRows > 0) {
             mostrarAlerta("Reserva Exitosa", "La reserva ha sido creada con éxito.");
@@ -240,6 +297,7 @@ if (idHabitacionField.getText().isEmpty() || numPersonasField.getText().isEmpty(
     } catch (SQLException e) {
         mostrarAlerta("Error de Base de Datos", "No se pudo completar la operación: " + e.getMessage());
     } finally {
+        // Cerrar la conexión y liberar los recursos
         try {
             if (pstmt != null) pstmt.close();
             if (conn != null) conn.close();
@@ -247,8 +305,8 @@ if (idHabitacionField.getText().isEmpty() || numPersonasField.getText().isEmpty(
             e.printStackTrace();
         }
     }
-    
 }
+
 public void inicializarConDatosHabitacion(Habitacion habitacion) {
     if (habitacion != null) {
         // Asegúrate de que los nombres de los campos coincidan con los fx:id en tu archivo FXML
@@ -314,31 +372,36 @@ private int obtenerIdCliente() {
     }
     return idCliente;
 }
-@FXML
+
+// Método para obtener la información del usuario actual
 private void volverAlInicio(ActionEvent event) {
-    try {
-        // Carga el archivo FXML para la ventana de inicio
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Inicio/InicioFXML.fxml"));
-        Parent root = loader.load();
+        try {
+            // Load the Inicio FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Disponibilidad/DisponibilidadFXML.fxml"));
+            Parent root = loader.load();
 
-        // Aquí es donde pasamos la información del usuario al controlador de inicio
-        InicioController inicioController = loader.getController();
-        UsuarioInfo usuarioInfo = null;
-        inicioController.setUsuarioInfo(usuarioInfo); // Suponiendo que tienes un método setUsuarioInfo en InicioController
+            // Get the controller for the Inicio FXML
+            InicioController inicioController = loader.getController();
 
-        // Obtiene la escena actual y cierra la ventana
-        Stage stageActual = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stageActual.close();
+            // Here you can pass the UsuarioInfo to
+            // the InicioController
+            inicioController.setUsuarioInfo(this.usuarioInfo);
 
-        // Crea una nueva etapa para la ventana de inicio
-        Stage stageInicio = new Stage();
-        stageInicio.setTitle("Inicio");
-        stageInicio.setScene(new Scene(root));
-        stageInicio.show();
-    } catch (java.io.IOException e) {
-        e.printStackTrace();
+            // Close the current window
+            ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
+
+            // Open the Inicio window
+            Stage inicioStage = new Stage();
+            inicioStage.setTitle("Inicio");
+            inicioStage.setScene(new Scene(root));
+            inicioStage.show();
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+            // Handle exceptions here, maybe show an alert dialog
+        }
     }
-}
+
+
 
 // Método para mostrar alertas
 private void mostrarAlerta(String titulo, String mensaje) {
@@ -348,4 +411,16 @@ private void mostrarAlerta(String titulo, String mensaje) {
     alert.setContentText(mensaje);
     alert.showAndWait();
 }
+
+    public void setPrecioTotal(BigDecimal precioTotal) {
+    // Asegúrate de que el fx:id de precioTotalLabel está correctamente vinculado en tu archivo FXML.
+    if (precioTotalLabel != null) {
+        // Aquí convertimos el BigDecimal a String, formateando para tener dos decimales.
+        precioTotalLabel.setText(String.format("€%.2f", precioTotal));
+    } else {
+        // Esto es solo para debug. Si ves este mensaje significa que precioTotalLabel no está vinculado.
+        System.err.println("precioTotalLabel no está inicializado.");
+    }
+    }
+    
 }

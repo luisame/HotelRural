@@ -70,3 +70,19 @@
 #precioColumna {
     -fx-alignment: CENTER; 
 }
+precio-total-container {
+    -fx-padding: 10; /* Ajusta el espacio interno */
+    -fx-border-style: solid inside; 
+    -fx-border-width: 2; 
+    -fx-border-insets: 5; 
+    -fx-border-radius: 5; 
+    -fx-border-color: black; /* Color del borde del cuadrado */
+    -fx-background-color: #FFFFFF; /* Color de fondo del cuadrado */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); /* Opcional: sombra */
+}
+
+.precio-total-label {
+    -fx-font-size: 18px; /* Tamaño de la fuente más grande */
+    -fx-font-weight: bold; /* Fuente en negrita */
+    -fx-text-fill: #000000; /* Color del texto */
+}

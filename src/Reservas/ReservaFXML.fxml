@@ -60,7 +60,34 @@
         </TableColumn>
     </columns>
 </TableView>
-
+<!-- Desglose del presupuesto -->
+        <VBox spacing="5">
+            <HBox alignment="BASELINE_RIGHT">
+                <Label text="Precio Base: " />
+                <Label fx:id="precioBaseLabel" text="€0.00" />
+            </HBox>
+            <HBox alignment="BASELINE_RIGHT">
+                <Label text="Número de Personas: " />
+                <Label fx:id="numPersonasLabel" text="0" />
+            </HBox>
+            <HBox alignment="BASELINE_RIGHT">
+                <Label text="Número de Niños: " />
+                <Label fx:id="numNinosLabel" text="0" />
+            </HBox>
+            <HBox alignment="BASELINE_RIGHT">
+                <Label text="Número de Bebés: " />
+                <Label fx:id="numBebesLabel" text="0" />
+            </HBox>
+            <HBox alignment="BASELINE_RIGHT">
+                <Label text="Suplemento: " />
+                <Label fx:id="suplementoLabel" text="€0.00" />
+            </HBox>
+            <HBox alignment="BASELINE_RIGHT" styleClass="total-container">
+                <Label text="Precio Total: " />
+                <Label fx:id="precioTotalLabel" styleClass="precio-total-label" text="€0.00" />
+            </HBox>
+        </VBox>
+        
 </VBox>
 
         </HBox>
