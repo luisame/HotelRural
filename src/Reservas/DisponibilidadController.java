@@ -62,6 +62,10 @@ public class DisponibilidadController {
     @FXML
     private TableColumn<Habitacion, BigDecimal> precioHabitacionNocheColumn;
     private ReservaController reservaController;
+    private Object inicioController;
+
+    public DisponibilidadController() {
+    }
 
 
     public void setUsuarioInfo(UsuarioInfo usuarioInfo) {
@@ -69,16 +73,82 @@ public class DisponibilidadController {
         // Aquí puedes actualizar la UI o hacer lo que necesites con la información del usuario
     
 }
-    @FXML
+    public void setFechaInicio(LocalDate fechaInicio) {
+    this.fechaInicio.setValue(fechaInicio);
+}
+
+public void setFechaFin(LocalDate fechaFin) {
+    this.fechaFin.setValue(fechaFin);
+}
+
+public void setNumeroPersonas(int numeroPersonas) {
+    this.numeroPersonas.setText(String.valueOf(numeroPersonas));
+}
+// Método para abrir la ventana de reserva
+private void mostrarFXMLReservas(Habitacion habitacionSeleccionada) {
     
-    private final BigDecimal PRECIO_NINOS_6 = BigDecimal.ZERO; // Precio para niños menores de 6 años (gratis)
+   
+    if (reservaStage != null && reservaStage.isShowing()) {
+        // Si la ventana ya está abierta, tráela al frente
+        reservaStage.toFront();
+        return;
+    }
+       try {
+        LocalDate inicio = fechaInicio.getValue();
+        LocalDate fin = fechaFin.getValue();
+        
+        int numAdultos = 0;
+        int numNinos612Int = 0;
+        int NumMenores6 = 0;
+        try {
+            numAdultos = Integer.parseInt(numeroPersonas.getText().isEmpty() ? "0" : numeroPersonas.getText());
+            numNinos612Int = Integer.parseInt(numNinos612.getText().isEmpty() ? "0" : numNinos612.getText());
+            NumMenores6 = Integer.parseInt(numBebesLabel.getText().isEmpty() ? "0" : numBebesLabel.getText());
+        } catch (NumberFormatException e) {
+            mostrarAlerta("Error de entrada", "Por favor, ingrese números válidos para el número de personas y niños.");
+            return;
+        }
+        
+        // Obtener la instancia de UsuarioInfo justo antes de necesitarla.
+        UsuarioInfo usuarioInfor; 
+        usuarioInfor = UsuarioInfo.getInstance();
+
+       // Calculas el precio total
+        BigDecimal precioTotalReserva = calcularPrecioTotal(habitacionSeleccionada, inicio, fin, numAdultos, numNinos612Int, NumMenores6);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Reservas/ReservaFXML.fxml"));
+        Parent root = loader.load();
+
+        // Obtienes el controlador para la ventana de reserva
+        ReservaController controller = loader.getController();
+
+        // Pasas los datos a los campos o métodos de ReservaController
+        controller.setPrecioBase(precioBase); 
+        controller.setNumPersonas(numPersonas);
+        controller.setNumNinos(numNinos); 
+        controller.setNumBebes(numBebes); 
+        controller.setSuplemento(suplemento); 
+        controller.setPrecioTotal(precioTotalReserva);
+        controller.setUsuarioInfo (usuarioInfor);
+        controller.iniciarConDatosDeReserva(habitacionSeleccionada, inicio, fin, numAdultos);
+
+           
+        reservaStage = new Stage();
+        reservaStage.setTitle("Detalles de la Reserva");
+        reservaStage.setScene(new Scene(root));
+        reservaStage.show();
+    } catch (IOException e) {
+        // Manejo mejorado de la excepción
+        String errorMessage = "Error al cargar la ventana de reserva. Por favor, inténtelo de nuevo más tarde.";
+        System.err.println(errorMessage);
+        mostrarAlerta("Error de carga", errorMessage + "\nDetalles: " + e.getMessage());
+    }
+}
+    // Precio para niños menores de 6 años (gratis)
     private final BigDecimal DESCUENTO_NINOS_612 = BigDecimal.valueOf(0.5); // Descuento del 50% para niños mayores de 6 y menores de 12 años
-private BigDecimal precioSuplemento = BigDecimal.ZERO; // Valor por defecto para evitar NullPointerException
-    private ObservableList<Habitacion> habitacionesDisponibles;
+    private final BigDecimal precioSuplemento = BigDecimal.ZERO; // Valor por defecto para evitar NullPointerException
     
     private long numNoches;
     private int numPersonas;
-private SuplementoSeleccionado suplementoSeleccionado;
    private BigDecimal suplemento = BigDecimal.ZERO;
 @FXML
     private Label precioBaseLabel;
@@ -93,11 +163,7 @@ private SuplementoSeleccionado suplementoSeleccionado;
      private BigDecimal suplementoTemporada;
       @FXML
    
-    private BigDecimal precioBaseLabelValue= BigDecimal.ZERO;
-    private int numPersonasLabelValue=0;
-    private int numNinosLabelValue = 0;
-    private int numBebesLabelValue = 0;
-    private BigDecimal suplementoLabelValue = BigDecimal.ZERO;
+    
 
     // Variables para los datos de reserva
     private BigDecimal precioBase = BigDecimal.ZERO;
@@ -113,7 +179,7 @@ private SuplementoSeleccionado suplementoSeleccionado;
         this.reservaController = reservaController;
     }
    public void setPrecioTotal(BigDecimal precioTotal) {
-    // Asegúrate de que precioTotalLabel está correctamente vinculado al componente en tu archivo FXML
+   
     if(precioTotalLabel != null) {
         precioTotalLabel.setText(String.format("€%s", precioTotal.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString()));
     } else {
@@ -136,7 +202,7 @@ private void limpiarFormulario(ActionEvent event) {
     @FXML
     public void initialize() {
         precioHabitacionNocheColumn.setCellValueFactory(new PropertyValueFactory<>("precioTotal"));
-        suplementoSeleccionado = new SuplementoSeleccionado(precioSuplemento);
+        new SuplementoSeleccionado(precioSuplemento);
 
         // Configuración del DatePicker para deshabilitar fechas anteriores a hoy
         fechaInicio.setDayCellFactory(picker -> new DateCell() {
@@ -195,22 +261,19 @@ private BigDecimal calcularPrecioTotal(Habitacion habitacionSeleccionada, LocalD
     // Suponiendo que numBebes se calcula en alguna parte del código, de lo contrario, asegúrese de actualizarlo aquí
 
     // Precio total antes de aplicar los suplementos de temporada
-    BigDecimal precioTotal = precioBase.add(precioTotalNinos612).multiply(BigDecimal.valueOf(numNoches));
+    BigDecimal PrecioTotal = precioBase.add(precioTotalNinos612).multiply(BigDecimal.valueOf(numNoches));
 
     // Implementación de la lógica para sumar el suplemento de la temporada
     suplementoTemporada = calcularSuplementoTemporada(inicio, fin);
-    precioTotal = precioTotal.add(suplementoTemporada);
+    PrecioTotal = PrecioTotal.add(suplementoTemporada);
 
   // Ahora llamamos a actualizarInformacionDeReserva para reflejar los valores en la interfaz de usuario
     actualizarInformacionDeReserva();
  // Actualizar solo el valor del total, manteniendo el símbolo de la moneda
-    precioTotalLabel.setText(precioTotal.toPlainString());
-    return precioTotal;
+    precioTotalLabel.setText(PrecioTotal.toPlainString());
+    return PrecioTotal;
 }
 
-
-
-  
 
  private void actualizarInformacionDeReserva() {
     // Actualizar solo el valor del precio base
@@ -228,8 +291,6 @@ private BigDecimal calcularPrecioTotal(Habitacion habitacionSeleccionada, LocalD
 }
 
 
-
-
 public void calcularValores() {
     // Intenta parsear las entradas del usuario a números
     try {
@@ -238,9 +299,6 @@ public void calcularValores() {
         int numNinos612Int = Integer.parseInt(numNinos612.getText());
 
        
-        numPersonasLabelValue = numAdultos + numNinosMenores6Int + numNinos612Int;
-        numNinosLabelValue =  numNinos612Int; // la suma de todos los niños
-        numBebesLabelValue = numNinosMenores6Int; //  para calcular Bebés
        
         // Actualiza la interfaz de usuario con los valores calculados
         actualizarInformacionDeReserva();
@@ -284,7 +342,7 @@ private void handleTablaHabitacionesDisponiblesMouseClicked(MouseEvent event) {
 }
 private BigDecimal calcularSuplementoTemporada(LocalDate inicio, LocalDate fin) {
     BigDecimal suplementoTotal = BigDecimal.ZERO;
-    String sql = "SELECT rango_fechas_desde, rango_fechas_hasta, suplemento_temporada "
+    String sql = "SELECT rango_fechas_desde, rango_fechas_hasta, precio_temporada "
                + "FROM temporadas "
                + "WHERE rango_fechas_desde <= ? AND rango_fechas_hasta >= ?";
 
@@ -307,16 +365,19 @@ private BigDecimal calcularSuplementoTemporada(LocalDate inicio, LocalDate fin) 
             // Cálculo de días de solapamiento
             long diasSolapamiento = ChronoUnit.DAYS.between(solapamientoInicio, solapamientoFin.plusDays(1));
 
-            // Obtén el suplemento por día para esa temporada y calcule el total
-            BigDecimal suplementoPorDia = rs.getBigDecimal("suplemento_temporada");
+            // Obtiene el suplemento por día para esa temporada y calcula el total
+            BigDecimal suplementoPorDia = rs.getBigDecimal("precio_temporada");
             BigDecimal suplementoParaRango = suplementoPorDia.multiply(BigDecimal.valueOf(diasSolapamiento));
             suplementoTotal = suplementoTotal.add(suplementoParaRango);
         }
         
         rs.close();
     } catch (SQLException e) {
+        // Manejo mejorado de la excepción
+        String errorMessage = "Error al calcular el suplemento de temporada. Por favor, inténtelo de nuevo más tarde.";
+        System.err.println(errorMessage);
         e.printStackTrace();
-        // Manejar adecuadamente la excepción
+        mostrarAlerta("Error de base de datos", errorMessage + "\nDetalles: " + e.getMessage());
     }
     System.out.println("Suplemento: "+suplementoTotal);
     return suplementoTotal;
@@ -324,34 +385,36 @@ private BigDecimal calcularSuplementoTemporada(LocalDate inicio, LocalDate fin) 
 
 
 
+    
     // Método para volver al inicio
     @FXML
     private void volverAlInicio(ActionEvent event) {
-        try {
-            // Load the Inicio FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Inicio/InicioFXML.fxml"));
-            Parent root = loader.load();
-
-            // Get the controller for the Inicio FXML
-            InicioController inicioController = loader.getController();
-
-            // Here you can pass the UsuarioInfo to
-            // the InicioController
+       
+    try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Inicio/InicioFXML.fxml"));
+        Parent root = loader.load();
+        InicioController inicioController = loader.getController();
+        
+        // Validación nula para usuarioInfo
+        if (this.usuarioInfo != null) {
             inicioController.setUsuarioInfo(this.usuarioInfo);
-
-            // Close the current window
-            ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
-
-            // Open the Inicio window
-            Stage inicioStage = new Stage();
-            inicioStage.setTitle("Inicio");
-            inicioStage.setScene(new Scene(root));
-            inicioStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            // Handle exceptions here, maybe show an alert dialog
+        } else {
+            mostrarAlerta("Error", "Usuario no autenticado. Por favor, inicie sesión de nuevo.");
+            return;
         }
+
+        Stage stage = new Stage();
+        stage.setTitle("Inicio");
+        stage.setScene(new Scene(root));
+        stage.show();
+
+        // Cerrar la ventana actual
+        ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
+    } catch (IOException e) {
+        e.printStackTrace();
+        mostrarAlerta("Error", "No se pudo cargar la pantalla de inicio.");
     }
+}
 
 
     // Método para buscar disponibilidad
@@ -385,41 +448,42 @@ private BigDecimal calcularSuplementoTemporada(LocalDate inicio, LocalDate fin) 
 
     // Método para buscar habitaciones disponibles
     private ObservableList<Habitacion> buscarHabitacionesDisponibles(LocalDate inicio, LocalDate fin, int numPersonas) {
-        ObservableList<Habitacion> habitacionesDisponibles = FXCollections.observableArrayList();
+    ObservableList<Habitacion> HabitacionesDisponibles = FXCollections.observableArrayList();
 
-        try (Connection conn = DataSourceManager.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(
-                     "SELECT id_habitacion, descripcion, capacidad, estado, precio " +
-                     "FROM habitaciones " +
-                     "WHERE estado = 'Libre' AND capacidad >= ? " +
-                     "AND NOT EXISTS (SELECT 1 FROM reservas WHERE habitaciones.id_habitacion = reservas.id_habitacion " +
-                     "AND (? BETWEEN FechaEntrada AND FechaSalida OR ? BETWEEN FechaEntrada AND FechaSalida))")) {
+    String sql = "SELECT id_habitacion, descripcion, capacidad, estado, precio " +
+                 "FROM habitaciones " +
+                 "WHERE estado = 'L' AND capacidad >= ? " +
+                 "AND NOT EXISTS (SELECT 1 FROM reservas WHERE habitaciones.id_habitacion = reservas.id_habitacion " +
+                 "AND (? BETWEEN fecha_entrada AND fecha_salida OR ? BETWEEN fecha_entrada AND fecha_salida))";
 
-            stmt.setInt(1, numPersonas);
-            stmt.setDate(2, java.sql.Date.valueOf(inicio));
-            stmt.setDate(3, java.sql.Date.valueOf(fin));
+    try (Connection conn = DataSourceManager.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Habitacion habitacion = new Habitacion(
-                            rs.getInt("id_habitacion"),
-                            rs.getString("descripcion"),
-                            rs.getInt("capacidad"),
-                            rs.getString("estado"),
-                            rs.getBigDecimal("precio"));
+        stmt.setInt(1, numPersonas);
+        stmt.setDate(2, java.sql.Date.valueOf(inicio));
+        stmt.setDate(3, java.sql.Date.valueOf(fin));
 
-                    habitacionesDisponibles.add(habitacion);
-                }
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Habitacion habitacion = new Habitacion(
+                        rs.getInt("id_habitacion"),
+                        rs.getString("descripcion"),
+                        rs.getInt("capacidad"),
+                        rs.getString("estado"),
+                        rs.getBigDecimal("precio"));
+
+                HabitacionesDisponibles.add(habitacion);
             }
-
-            // Establecer el precio en la columna precioHabitacionNocheColumn
-            precioHabitacionNocheColumn.setCellValueFactory(new PropertyValueFactory<>("precio")); // Asumiendo que el nombre del atributo en la clase Habitacion es "precio"
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return habitacionesDisponibles;
+    } catch (SQLException e) {
+        // Manejo mejorado de la excepción
+        String errorMessage = "Error al buscar habitaciones disponibles. Por favor, inténtelo de nuevo más tarde.";
+        System.err.println(errorMessage);
+        mostrarAlerta("Error de base de datos", errorMessage + "\nDetalles: " + e.getMessage());
     }
+    return HabitacionesDisponibles;
+}
+
 
     // Método para mostrar una alerta
     private void mostrarAlerta(String titulo, String mensaje) {
@@ -430,60 +494,10 @@ private BigDecimal calcularSuplementoTemporada(LocalDate inicio, LocalDate fin) 
         alerta.showAndWait();
     }
 
-    // Método para abrir la ventana de reserva
-   private void mostrarFXMLReservas(Habitacion habitacionSeleccionada) {
-    try {
-        LocalDate inicio = fechaInicio.getValue();
-        LocalDate fin = fechaFin.getValue();
-        
-        int numAdultos = 0;
-        int numNinos612Int = 0;
-        int numNinosMenores6 = 0;
-        try {
-            numAdultos = Integer.parseInt(numeroPersonas.getText().isEmpty() ? "0" : numeroPersonas.getText());
-            numNinos612Int = Integer.parseInt(numNinos612.getText().isEmpty() ? "0" : numNinos612.getText());
-            numNinosMenores6 = Integer.parseInt(numBebesLabel.getText().isEmpty() ? "0" : numBebesLabel.getText());
-        } catch (NumberFormatException e) {
-            mostrarAlerta("Error de entrada", "Por favor, ingrese números válidos para el número de personas y niños.");
-            return;
-        }
-        
-        // Obtener la instancia de UsuarioInfo justo antes de necesitarla.
-        UsuarioInfo usuarioInfo = UsuarioInfo.getInstance(); 
+    
+    
+      // Variable a nivel de clase para rastrear la ventana de reserva
+private Stage reservaStage = null;
+  
 
-       // Calculas el precio total
-        BigDecimal precioTotalReserva = calcularPrecioTotal(habitacionSeleccionada, inicio, fin, numAdultos, numNinos612Int, numNinosMenores6);
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Reservas/ReservaFXML.fxml"));
-        Parent root = loader.load();
-
-        // Obtienes el controlador para la ventana de reserva
-        ReservaController controller = loader.getController();
-
-        // Pasas los datos a los campos o métodos de ReservaController
-        controller.setPrecioBase(precioBase); // suponiendo que precioBase es un BigDecimal
-        controller.setNumPersonas(numPersonas); // suponiendo que numPersonas es un int
-        controller.setNumNinos(numNinos); // suponiendo que numNinos es un int
-        controller.setNumBebes(numBebes); // suponiendo que numBebes es un int
-        controller.setSuplemento(suplemento); // suponiendo que suplemento es un BigDecimal
-        controller.setPrecioTotal(precioTotalReserva);
-        controller.iniciarConDatosDeReserva(habitacionSeleccionada, inicio, fin, numAdultos);
-
-        // Aquí parece haber un malentendido. `disponibilidadController` no está definido en este fragmento.
-        // Supongo que querrías pasar `usuarioInfo` al controlador de Reserva, que ya hicimos.
-        // Si necesitas pasarlo a otro controlador, asegúrate de que esté accesible desde este contexto.
-        
-        System.out.println("Niños: " + numNinos);
-        System.out.println("Bebés : " + numBebes);
-        System.out.println("Suplemento : " + suplemento);
-        System.out.println("PVP : " + precioTotalReserva);
-        
-        Stage stage = new Stage();
-        stage.setTitle("Detalles de la Reserva");
-        stage.setScene(new Scene(root));
-        stage.show();
-    } catch (IOException e) {
-        e.printStackTrace();
-        mostrarAlerta("Error", "No se pudo cargar la ventana de reserva.");
-    }
-}
 }

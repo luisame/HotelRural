@@ -42,6 +42,7 @@ public class InicioController {
 
     public  UsuarioInfo usuarioInfo;
      public void setUsuarioInfo(UsuarioInfo usuarioInfo) {
+         // Obtiene la instancia única de UsuarioInfo, actualizando los campos
         UsuarioInfo.getInstance().setIdUsuario(usuarioInfo.getIdUsuario());
         UsuarioInfo.getInstance().setNivelAcceso(usuarioInfo.getNivelAcceso());
         UsuarioInfo.getInstance().setNombreEmpleado(usuarioInfo.getNombreEmpleado());

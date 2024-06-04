@@ -64,4 +64,13 @@ public class UsuarioInfo {
     public void setApellidoEmpleado(String apellidoEmpleado) {
         this.apellidoEmpleado = apellidoEmpleado;
     }
+    @Override
+    public String toString() {
+        return "UsuarioInfo{" +
+                "idUsuario=" + idUsuario +
+                ", nivelAcceso=" + nivelAcceso +
+                ", nombreEmpleado='" + nombreEmpleado + '\'' +
+                ", apellidoEmpleado='" + apellidoEmpleado + '\'' +
+                '}';
+    }
 }

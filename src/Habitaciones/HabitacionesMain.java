@@ -22,7 +22,7 @@ public class HabitacionesMain extends Application {
     public void start(Stage primaryStage) {
         if (usuarioInfo != null) { // Verifica si la información del usuario está disponible
             nivelAcceso = usuarioInfo.getNivelAcceso(); // Obtiene el nivel de acceso del usuario
-            System.out.println("nivel_acceso_ Clientes= " + nivelAcceso);
+            System.out.println("nivel_acceso_ Habitaciones= " + nivelAcceso);
             
             if (nivelAcceso == 1) { // Verifica si el usuario tiene nivel de acceso 1
                 launchClientes(primaryStage); // Lanza la ventana de clientes

@@ -51,6 +51,7 @@
       <url>git@github.com:brettwooldridge/HikariCP.git</url>
       <tag>HikariCP-5.0.1</tag>
    </scm>
+   
 
    <licenses>
       <license>
@@ -72,6 +73,30 @@
       <artifactId>oss-parent</artifactId>
       <version>9</version>
    </parent>
+   <dependency>
+    <groupId>org.apache.pdfbox</groupId>
+    <artifactId>pdfbox</artifactId>
+    <version>2.0.24</version>
+</dependency>
+<dependencies>
+  <dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger2</artifactId>
+    <version>2.9.2</version>
+  </dependency>
+  <dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger-ui</artifactId>
+    <version>2.9.2</version>
+  </dependency>
+</dependencies>
+
+   <dependency>
+    <groupId>com.itextpdf</groupId>
+    <artifactId>itext7-core</artifactId>
+    <version>7.1.9</version>
+    <type>pom</type>
+</dependency>
 <dependency>
     <groupId>ch.qos.logback</groupId>
     <artifactId>logback-classic</artifactId>

@@ -14,7 +14,7 @@ public class Habitacion {
     private final StringProperty descripcion;
     private final IntegerProperty capacidad;
     private final StringProperty estado;
-    private ObjectProperty<BigDecimal> precioPorNoche; // Propiedad para el precio por noche
+    private final ObjectProperty<BigDecimal> precioPorNoche; // Propiedad para el precio por noche
     private BigDecimal precioTotal; // Precio total de la estancia
 
     // Constructor de la clase Habitacion
@@ -74,22 +74,18 @@ public class Habitacion {
     public void setEstado(String estado) {
         this.estado.set(estado);
     }
-public BigDecimal getPrecio() {
-    return getPrecioPorNoche();
-}
 
     // Getter y setter para la propiedad de precio por noche
     public final ObjectProperty<BigDecimal> precioPorNocheProperty() {
-        if (precioPorNoche == null) precioPorNoche = new SimpleObjectProperty<>(this, "precioPorNoche");
         return precioPorNoche;
     }
 
     public final BigDecimal getPrecioPorNoche() {
-        return precioPorNocheProperty().get();
+        return precioPorNoche.get();
     }
 
     public final void setPrecioPorNoche(BigDecimal precioPorNoche) {
-        precioPorNocheProperty().set(precioPorNoche);
+        this.precioPorNoche.set(precioPorNoche);
     }
 
     // Método para obtener el precio total

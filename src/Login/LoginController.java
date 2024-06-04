@@ -73,16 +73,22 @@ public class LoginController {
     }
 
     private void postLoginSuccess(UsuarioInfo userInfoFromDB) {
-        PauseTransition pause = new PauseTransition(Duration.seconds(2)); // Ajusta este valor según necesites
-        loginProgress.setVisible(true);
-        pause.setOnFinished(event -> Platform.runLater(() -> {
-           loginProgress.setVisible(false);
-           
-            showAlert("Login", "Acceso permitido\nBienvenido " + userInfoFromDB.getNombreEmpleado(), Alert.AlertType.INFORMATION);
-            cargarInicio(userInfoFromDB);
-        }));
-        pause.play();
-    }
+    // Ocultar el indicador de progreso
+    loginProgress.setVisible(false);
+
+    // Mostrar un alerta de éxito
+    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+    successAlert.setTitle("Login Exitoso");
+    successAlert.setHeaderText(null); // Opcional, si no quieres un encabezado
+    successAlert.setContentText("Acceso permitido\nBienvenido " + userInfoFromDB.getNombreEmpleado());
+
+    // Esperar a que el usuario cierre la alerta manualmente
+    successAlert.showAndWait();
+    
+    // Después de cerrar la alerta, cargar la ventana de inicio
+    cargarInicio(userInfoFromDB);
+}
+
 
     private void cargarInicio(UsuarioInfo usuarioInfo) {
         try {

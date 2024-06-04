@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Importaciones de los componentes JavaFX que se utilizarán en el FXML. -->
+
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<!-- 
-  VBox es un contenedor que organiza los elementos en una sola columna vertical.
-  Este archivo FXML define una interfaz de usuario con un botón centrado que, cuando se hace clic,
-  invoca un método para restaurar la base de datos.
-  
-  'fx:controller' especifica el controlador que manejará la lógica de la interfaz de usuario y los eventos.
--->
-<VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Administracion.AdministracionController">
-    <!-- Botón que ofrece una funcionalidad para restaurar la base de datos.
-         'onAction' indica el método que se invocará cuando se haga clic en el botón. -->
-    <Button text="Restaurar Base de Datos" onAction="#handleRestoreDatabase" />
-</VBox>
+<AnchorPane prefHeight="516.0" prefWidth="705.0" stylesheets="@AdministracionCCS.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Administracion.BBDDController">
+    <!-- Botón Volver en la parte superior derecha -->
+    <Button fx:id="botonVolver" onAction="#volverAlInicio" styleClass="botonVolver" text="Volver" layoutX="611.0" layoutY="20.0"/>
+
+    <!-- Contenido central -->
+    <VBox alignment="CENTER" spacing="20" layoutX="14.0" layoutY="65.0">
+        <TextFlow prefHeight="34.0" prefWidth="634.0" textAlignment="CENTER">
+            <Label contentDisplay="CENTER" text="Gestión de Base de Datos" textAlignment="CENTER">
+                <font>
+                    <Font name="Arial Rounded MT Bold" size="18.0" />
+                </font>
+            </Label>
+        </TextFlow>
+
+        <Button mnemonicParsing="false" onAction="#handleRestoreButton" prefHeight="116.0" prefWidth="177.0" styleClass="dibujado" text="Restaurar Datos"  />
+        <Button onAction="#handleBackupButton" prefHeight="116.0" prefWidth="177.0" styleClass="dibujado" text="Copia de seguridad" />
+    </VBox>
+</AnchorPane>
