@@ -33,6 +33,7 @@ import utilidades.UsuarioInfo;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javafx.scene.control.ProgressIndicator;
 
 public class ReservaController {
 
@@ -68,7 +69,8 @@ public class ReservaController {
     private int idHabitacion;
     private UsuarioInfo usuarioInfo;
     private Habitacion habitacionSeleccionada;
-
+@FXML
+    private ProgressIndicator ReservaProgress;
     public void setUsuarioInfo(UsuarioInfo usuarioInfo) {
         this.usuarioInfo = usuarioInfo;
     }
@@ -80,7 +82,10 @@ public class ReservaController {
     public void setFechaEntrada(LocalDate fecha) {
         fechaEntradaField.setValue(fecha);
     }
-
+/**
+ * 
+ * @param fecha 
+ */
     public void setFechaSalida(LocalDate fecha) {
         fechaSalidaField.setValue(fecha);
     }
@@ -109,7 +114,9 @@ public class ReservaController {
     public void setSuplemento(BigDecimal suplemento) {
         suplementoLabel.setText("€" + suplemento.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString());
     }
-
+/**
+ * Método que inicializa los parámetros de la tabla 
+ */
     @FXML
 public void initialize() {
     columnaDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
@@ -131,7 +138,13 @@ public void initialize() {
     });
 }
 
-
+/**
+ * 
+ * @param habitacionSeleccionada
+ * @param fechaEntrada
+ * @param fechaSalida
+ * @param numPersonas 
+ */
    public void iniciarConDatosDeReserva(Habitacion habitacionSeleccionada, LocalDate fechaEntrada, LocalDate fechaSalida, int numPersonas) {
     this.habitacionSeleccionada = habitacionSeleccionada;
     fechaEntradaField.setValue(fechaEntrada);
@@ -141,7 +154,9 @@ public void initialize() {
     tablaHabitacionesReservadas.setItems(data);
     
 }
-
+/**
+ * 
+ */
 private void limpiarCamposFormulario() {
     nombreField.setText("");
     apellidoField.setText("");
@@ -152,7 +167,10 @@ private void limpiarCamposFormulario() {
     emailField.setText("");
     otraInfoField.setText("");
 }
-
+/**
+ * 
+ * @param habitacionSeleccionada 
+ */
     public void mostrarDatosHabitacionSeleccionada(Habitacion habitacionSeleccionada) {
         descripcionField.setText(habitacionSeleccionada.getDescripcion());
         capacidadField.setText(String.valueOf(habitacionSeleccionada.getCapacidad()));
@@ -161,7 +179,9 @@ private void limpiarCamposFormulario() {
     // Método para volver a la pantalla de disponibilidad
     @FXML
     
-
+/**
+ * 
+ */
 public void volverADisponibilidad(ActionEvent event) {
     try {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Reservas/DisponibilidadFXML.fxml"));
@@ -187,7 +207,10 @@ public void volverADisponibilidad(ActionEvent event) {
         mostrarAlerta("Error", "No se pudo cargar la pantalla de disponibilidad.");
     }
 }
-
+/**
+ * 
+ * @param dni 
+ */
 
     @FXML
 public void buscarClientePorDNI(String dni) {
@@ -219,7 +242,11 @@ public void buscarClientePorDNI(String dni) {
     }
 }
  
-/// Clase para almacenar el precio total y la temporada
+
+/**
+ * 
+ */
+
 public class PrecioTemporada {
     private BigDecimal precioTotal;
     private String temporada;
@@ -237,7 +264,13 @@ public class PrecioTemporada {
         return temporada;
     }
 }
-
+/**
+ * 
+ * @param inicio
+ * @param fin
+ * @param idHabitacion
+ * @return 
+ */
 private PrecioTemporada calcularPrecioPorTemporada(LocalDate inicio, LocalDate fin, int idHabitacion) {
     BigDecimal precioTotal = BigDecimal.ZERO;
     String temporada = "";
@@ -297,7 +330,14 @@ private PrecioTemporada calcularPrecioPorTemporada(LocalDate inicio, LocalDate f
     System.out.println("Precio Total: " + precioTotal + " Temporada: " + temporada);
     return new PrecioTemporada(precioTotal, temporada);
 }
-
+/**
+ * 
+ * @param inicio
+ * @param fin
+ * @param numPersonas
+ * @param idHabitacion
+ * @return 
+ */
 private BigDecimal calcularPrecioPorPersona(LocalDate inicio, LocalDate fin, int numPersonas, int idHabitacion) {
     PrecioTemporada precioTemporada = calcularPrecioPorTemporada(inicio, fin, idHabitacion);
     BigDecimal precioTotal = precioTemporada.getPrecioTotal();
@@ -318,7 +358,10 @@ public BigDecimal calcularPrecioTotal(LocalDate inicio, LocalDate fin, int numPe
     System.out.println("Precio Total con " + numPersonas + " personas: " + precioTotal);
     return precioTotal;
 }
-
+/**
+ * 
+ * @param event 
+ */
 @FXML
 public void crearReserva(ActionEvent event) {
     UsuarioInfo usuarioInfo;
