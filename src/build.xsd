@@ -1,0 +1,29 @@
+<project name="HotelRural" default="run" basedir=".">
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="build"/>
+    <property name="lib.dir" value="lib"/>
+
+    <path id="classpath">
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${build.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="classpath"/>
+    </target>
+
+    <target name="run" depends="compile">
+        <java classname="Login.LoginMain" classpath="${build.dir}:${classpath}">
+            <classpath>
+                <path path="${build.dir}"/>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+</project>
