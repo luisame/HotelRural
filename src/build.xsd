@@ -1,11 +1,16 @@
 <project name="HotelRural" default="run" basedir=".">
+    <description>Builds, tests, and runs the project HotelRural.</description>
+    <import file="nbproject/build-impl.xml"/>
+
     <property name="src.dir" value="src"/>
     <property name="build.dir" value="build"/>
-    <property name="lib.dir" value="lib"/>
+    <property name="lib.dir" value="Libraries"/>
 
     <path id="classpath">
         <fileset dir="${lib.dir}">
-            <include name="*.jar"/>
+            <include name="slf4j-api-1.7.30.jar"/>
+            <include name="logback-classic-1.2.3.jar"/>
+            <include name="logback-core-1.2.3.jar"/>
         </fileset>
     </path>
 

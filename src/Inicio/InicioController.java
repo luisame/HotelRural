@@ -21,13 +21,13 @@ import utilidades.UsuarioInfo;
 public class InicioController {
 
     @FXML
-    private Button btnHabitaciones;
+    public Button btnHabitaciones;
 
     @FXML
-    private Button btnClientes;
+    public Button btnClientes;
 
     @FXML
-    private Button btnAdministracion;
+    public Button btnAdministracion;
 
     @FXML
     private Button btnExit;
@@ -59,7 +59,7 @@ public class InicioController {
      * @param event el evento de acción.
      */
     @FXML
-    private void handleBtnHabitaciones(ActionEvent event) {
+    public void handleBtnHabitaciones(ActionEvent event) {
         HabitacionesMain habitaciones = new HabitacionesMain();
         habitaciones.setUsuarioInfo(usuarioInfo);
         habitaciones.start(new Stage());
@@ -73,7 +73,7 @@ public class InicioController {
      * @param event el evento de acción.
      */
     @FXML
-    private void handleBtnClientes(ActionEvent event) {
+    public void handleBtnClientes(ActionEvent event) {
         ClientesMain clientes = new ClientesMain();
         clientes.setUsuarioInfo(usuarioInfo);
         clientes.start(new Stage());
@@ -88,7 +88,7 @@ public class InicioController {
      * @throws Exception si ocurre un error durante el inicio de la ventana de reservas.
      */
     @FXML
-    private void handleBtnReservas(ActionEvent event) throws Exception {
+    public void handleBtnReservas(ActionEvent event) throws Exception {
         ReservasMain reservas = new ReservasMain();
         reservas.setUsuarioInfo(usuarioInfo);
         reservas.start(new Stage());
@@ -102,7 +102,7 @@ public class InicioController {
      * @param event el evento de acción.
      */
     @FXML
-    private void handleBtnAdministracion(ActionEvent event) {
+    public void handleBtnAdministracion(ActionEvent event) {
         AdministracionMain administracion = new AdministracionMain();
         administracion.setUsuarioInfo(usuarioInfo);
         System.out.println("Datos " + usuarioInfo);
@@ -117,7 +117,7 @@ public class InicioController {
      * @param event el evento de acción.
      */
     @FXML
-    private void handleBtnExit(ActionEvent event) {
+    public void handleBtnExit(ActionEvent event) {
         // Crear una alerta de confirmación
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmar Salida");

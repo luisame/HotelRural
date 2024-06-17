@@ -1,7 +1,6 @@
 package Reservas;
 
 import Inicio.InicioController;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,8 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,13 +24,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import org.mariadb.jdbc.Statement;
 import utilidades.DataSourceManager;
 import utilidades.UsuarioInfo;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javafx.scene.control.ProgressIndicator;
+import javafx.stage.Window;
 
 public class ReservaController {
 
@@ -473,6 +468,7 @@ public void crearReserva(ActionEvent event) {
                         int idReserva = rs.getInt(1);
                         actualizarEstadoHabitacion(habitacionSeleccionada.getId(), "R");
                         mostrarAlerta("Reserva Exitosa", "La reserva ha sido creada con éxito.");
+                        cerrarVentanaYVolverInicio(event);
                     }
                 }
             } else {
@@ -484,18 +480,74 @@ public void crearReserva(ActionEvent event) {
     }
 }
 
+/**
+ * Actualiza el estado de una habitación en la base de datos.
+ * 
+ * @param idHabitacion El ID de la habitación cuyo estado se va a actualizar.
+ * @param nuevoEstado El nuevo estado que se va a asignar a la habitación.
+ */
 private void actualizarEstadoHabitacion(int idHabitacion, String nuevoEstado) {
+    // Consulta SQL para actualizar el estado de la habitación
     String updateQuery = "UPDATE habitaciones SET estado = ? WHERE id_habitacion = ?";
+    
+    // Intentar conectar a la base de datos y ejecutar la consulta
     try (Connection conn = DataSourceManager.getConnection();
          PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
+        
+        // Configurar los parámetros de la consulta
         pstmt.setString(1, nuevoEstado);
         pstmt.setInt(2, idHabitacion);
+        
+        // Ejecutar la actualización
         pstmt.executeUpdate();
     } catch (SQLException e) {
+        // Mostrar alerta en caso de error de base de datos
         mostrarAlerta("Error de Base de Datos", "No se pudo actualizar el estado de la habitación: " + e.getMessage());
     }
 }
 
+/**
+ * Cierra todas las ventanas abiertas y abre la ventana de inicio.
+ * 
+ * @param event El evento que desencadena esta acción.
+ */
+private void cerrarVentanaYVolverInicio(ActionEvent event) {
+    try {
+        // Cargar la nueva ventana de inicio
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Inicio/InicioFXML.fxml"));
+        Parent root = loader.load();
+
+        // Obtener el controlador de la pantalla de inicio
+        InicioController inicioController = loader.getController();
+        inicioController.setUsuarioInfo(this.usuarioInfo); // Pasar usuarioInfo de vuelta
+
+        // Crear una nueva escena y una nueva ventana para la pantalla de inicio
+        Stage nuevoStage = new Stage();
+        nuevoStage.setScene(new Scene(root));
+        nuevoStage.show();
+
+        // Cerrar todas las ventanas abiertas excepto la nueva ventana de inicio
+        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        for (Window window : Window.getWindows()) {
+            if (window instanceof Stage && window != nuevoStage) {
+                ((Stage) window).close();
+            }
+        }
+
+        // Cerrar la ventana de "Reservas"
+        currentStage.close();
+    } catch (IOException e) {
+        // Mostrar alerta en caso de error al cargar la ventana de inicio
+        mostrarAlerta("Error", "No se pudo cargar la pantalla de inicio: " + e.getMessage());
+    }
+}
+
+/**
+ * Muestra una alerta con un título y un mensaje específicos.
+ * 
+ * @param titulo El título de la alerta.
+ * @param mensaje El mensaje de la alerta.
+ */
 private void mostrarAlerta(String titulo, String mensaje) {
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
     alert.setTitle(titulo);
@@ -504,6 +556,3 @@ private void mostrarAlerta(String titulo, String mensaje) {
     alert.showAndWait();
 }
 }
-
-   
-

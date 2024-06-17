@@ -1,8 +1,15 @@
 package Administracion;
 
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+
 import java.io.IOException;
 
+/**
+ * Clase que maneja la restauración de la base de datos a partir de un archivo de respaldo.
+ */
 public class RestoreDatabase {
+
     /**
      * Realiza la restauración de una base de datos a partir de un archivo de respaldo.
      * 
@@ -13,8 +20,6 @@ public class RestoreDatabase {
      * @param password La contraseña para acceder a la base de datos.
      * @param backupFilePath La ruta completa al archivo de respaldo que se utilizará para la restauración.
      * @return true si la restauración se completó con éxito, false en caso contrario.
-     * @throws IOException Si ocurre un error de entrada/salida durante la ejecución del proceso de restauración.
-     * @throws InterruptedException Si el proceso es interrumpido mientras espera.
      */
     public static boolean performRestore(String host, String port, String targetDatabase, String username, String password, String backupFilePath) {
         // Ruta completa al comando mysql
@@ -41,12 +46,27 @@ public class RestoreDatabase {
                 System.out.println("Restore completed successfully.");
                 return true;
             } else {
-                System.err.println("Restore failed. Exit code: " + exitCode);
+                showErrorAlert("Restore failed. Exit code: " + exitCode);
                 return false;
             }
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            showErrorAlert("Error during restore: " + e.getMessage());
             return false;
         }
+    }
+
+    /**
+     * Muestra una alerta de error con el mensaje especificado en el hilo de la interfaz de usuario.
+     * 
+     * @param message El mensaje de error a mostrar en la alerta.
+     */
+    public static void showErrorAlert(String message) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error de Restauración");
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
     }
 }

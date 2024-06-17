@@ -16,11 +16,18 @@ import java.util.Date;
 import java.util.Optional;
 import javafx.fxml.FXML;
 
+/**
+ * Clase que maneja el respaldo de la base de datos.
+ */
 public class BackupDatabase {
 
-    // controlador de eventos que interactúa con la UI
+    /**
+     * Controlador de eventos que interactúa con la UI para iniciar el respaldo de la base de datos.
+     *
+     * @param event El evento de acción que desencadena este método.
+     */
     @FXML
-    private void handleBackup(ActionEvent event) {
+    public void handleBackup(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmar Respaldo");
         alert.setHeaderText(null);
@@ -36,9 +43,17 @@ public class BackupDatabase {
         }
     }
 
-    // Este método inicia la tarea de respaldo en un hilo en segundo plano
+    /**
+     * Inicia la tarea de respaldo en un hilo en segundo plano.
+     *
+     * @param host     El host de la base de datos.
+     * @param port     El puerto de la base de datos.
+     * @param database El nombre de la base de datos.
+     * @param username El nombre de usuario de la base de datos.
+     * @param password La contraseña de la base de datos.
+     * @return true si el respaldo fue exitoso, false en caso de fallo.
+     */
     public static boolean performBackup(String host, String port, String database, String username, String password) {
-       // Realiza el respaldo y devuelve true si fue exitoso, o false si hubo un fallo.
         boolean success = false;
         Task<Boolean> task = new Task<Boolean>() {
             @Override
@@ -63,9 +78,17 @@ public class BackupDatabase {
         return success;
     }
 
-    // Realiza el respaldo de la base de datos y devuelve un booleano indicando el éxito
+    /**
+     * Realiza el respaldo de la base de datos y devuelve un booleano indicando el éxito.
+     *
+     * @param host     El host de la base de datos.
+     * @param port     El puerto de la base de datos.
+     * @param database El nombre de la base de datos.
+     * @param username El nombre de usuario de la base de datos.
+     * @param password La contraseña de la base de datos.
+     * @return true si el respaldo fue exitoso, false en caso de fallo.
+     */
     private static boolean backupDatabase(String host, String port, String database, String username, String password) {
-        // Tu implementación actual de respaldo aquí...
         Date currentDate = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String backupFileName = "backup_" + dateFormat.format(currentDate) + ".sql";
@@ -73,7 +96,7 @@ public class BackupDatabase {
         String backupFolderPath = desktopPath + "Backup\\";
         File backupFolder = new File(backupFolderPath);
         if (!backupFolder.exists() && !backupFolder.mkdirs()) {
-            System.err.println("Failed to create backup folder.");
+            showErrorAlert("Failed to create backup folder.");
             return false;
         }
 
@@ -95,16 +118,35 @@ public class BackupDatabase {
             int exitCode = process.waitFor();
             return exitCode == 0;
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            showErrorAlert("Error al realizar el respaldo: " + e.getMessage());
             return false;
         }
     }
 
-    // Muestra una alerta en el hilo de la interfaz de usuario
+    /**
+     * Muestra una alerta con el mensaje especificado en el hilo de la interfaz de usuario.
+     *
+     * @param message El mensaje a mostrar en la alerta.
+     */
     public static void showAlert(String message) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Resultado del Respaldo");
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
+    }
+
+    /**
+     * Muestra una alerta de error con el mensaje especificado en el hilo de la interfaz de usuario.
+     *
+     * @param message El mensaje de error a mostrar en la alerta.
+     */
+    public static void showErrorAlert(String message) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error de Respaldo");
             alert.setHeaderText(null);
             alert.setContentText(message);
             alert.showAndWait();

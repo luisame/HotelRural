@@ -10,8 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
-import javafx.animation.PauseTransition;
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,9 +20,11 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import utilidades.DataSourceManager;
 
+/**
+ * Controlador para manejar la lógica de inicio de sesión.
+ */
 public class LoginController {
 
     @FXML
@@ -36,15 +36,22 @@ public class LoginController {
     @FXML
     private ProgressIndicator loginProgress;
 
+    /**
+     * Inicializa el controlador de inicio de sesión.
+     * 
+     * @param url La URL utilizada para resolver rutas relativas para el objeto raíz, o null si no se conoce.
+     * @param rb El recurso de localización utilizado para localizar el objeto raíz, o null si no se ha localizado.
+     */
     public void initialize(URL url, ResourceBundle rb) {
         userField.setText("");
         passwordField.setText("");
     }
 
+    /**
+     * Maneja la acción del botón de inicio de sesión.
+     */
     @FXML
-    private void handleLoginButtonAction() {
-       
-        
+    public void handleLoginButtonAction() {
         loginProgress.setVisible(true);
 
         Task<UsuarioInfo> loginTask = new Task<UsuarioInfo>() {
@@ -55,7 +62,7 @@ public class LoginController {
         };
 
         loginTask.setOnSucceeded(event -> {
-            loginProgress.setVisible(true);
+            loginProgress.setVisible(false);
             UsuarioInfo userInfoFromDB = loginTask.getValue();
             if (userInfoFromDB != null) {
                 postLoginSuccess(userInfoFromDB);
@@ -72,24 +79,28 @@ public class LoginController {
         new Thread(loginTask).start();
     }
 
+    /**
+     * Maneja el proceso después de un inicio de sesión exitoso.
+     * 
+     * @param userInfoFromDB La información del usuario obtenida de la base de datos.
+     */
     private void postLoginSuccess(UsuarioInfo userInfoFromDB) {
-    // Ocultar el indicador de progreso
-    loginProgress.setVisible(false);
+        loginProgress.setVisible(false);
 
-    // Mostrar un alerta de éxito
-    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-    successAlert.setTitle("Login Exitoso");
-    successAlert.setHeaderText(null); // Opcional, si no quieres un encabezado
-    successAlert.setContentText("Acceso permitido\nBienvenido " + userInfoFromDB.getNombreEmpleado());
+        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+        successAlert.setTitle("Login Exitoso");
+        successAlert.setHeaderText(null);
+        successAlert.setContentText("Acceso permitido\nBienvenido " + userInfoFromDB.getNombreEmpleado());
+        successAlert.showAndWait();
 
-    // Esperar a que el usuario cierre la alerta manualmente
-    successAlert.showAndWait();
-    
-    // Después de cerrar la alerta, cargar la ventana de inicio
-    cargarInicio(userInfoFromDB);
-}
+        cargarInicio(userInfoFromDB);
+    }
 
-
+    /**
+     * Carga la ventana de inicio después de un inicio de sesión exitoso.
+     * 
+     * @param usuarioInfo La información del usuario que ha iniciado sesión.
+     */
     private void cargarInicio(UsuarioInfo usuarioInfo) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Inicio/InicioFXML.fxml"));
@@ -105,9 +116,18 @@ public class LoginController {
             Stage loginStage = (Stage) userField.getScene().getWindow();
             loginStage.close();
         } catch (IOException e) {
+            showAlert("Error", "No se pudo cargar la ventana de inicio.", Alert.AlertType.ERROR);
         }
     }
 
+    /**
+     * Obtiene la información del usuario de la base de datos.
+     * 
+     * @param username El nombre de usuario.
+     * @param password La contraseña del usuario.
+     * @return La información del usuario si el inicio de sesión es exitoso, null en caso contrario.
+     * @throws Exception Si ocurre un error durante la obtención de la información del usuario.
+     */
     private UsuarioInfo getUserInfoFromDatabase(String username, String password) throws Exception {
         try (Connection connection = DataSourceManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
@@ -131,6 +151,13 @@ public class LoginController {
         return null;
     }
 
+    /**
+     * Muestra una alerta con el mensaje especificado.
+     * 
+     * @param title El título de la alerta.
+     * @param content El contenido de la alerta.
+     * @param alertType El tipo de alerta.
+     */
     private void showAlert(String title, String content, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);

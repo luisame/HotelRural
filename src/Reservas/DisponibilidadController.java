@@ -448,13 +448,18 @@ private BigDecimal calcularSuplementoTemporada(LocalDate inicio, LocalDate fin) 
 
     // Método para buscar habitaciones disponibles
     private ObservableList<Habitacion> buscarHabitacionesDisponibles(LocalDate inicio, LocalDate fin, int numPersonas) {
-    ObservableList<Habitacion> HabitacionesDisponibles = FXCollections.observableArrayList();
+    ObservableList<Habitacion> habitacionesDisponibles = FXCollections.observableArrayList();
 
-    String sql = "SELECT id_habitacion, descripcion, capacidad, estado, precio " +
-                 "FROM habitaciones " +
-                 "WHERE estado = 'L' AND capacidad >= ? " +
-                 "AND NOT EXISTS (SELECT 1 FROM reservas WHERE habitaciones.id_habitacion = reservas.id_habitacion " +
-                 "AND (? BETWEEN fecha_entrada AND fecha_salida OR ? BETWEEN fecha_entrada AND fecha_salida))";
+    String sql = "SELECT h.id_habitacion, h.descripcion, h.capacidad, h.estado, h.precio " +
+                 "FROM habitaciones h " +
+                 "WHERE h.capacidad >= ? " +
+                
+                 "AND h.id_habitacion NOT IN (SELECT r.id_habitacion " +
+                                             "FROM reservas r " +
+                                             "WHERE (? BETWEEN r.fecha_entrada AND r.fecha_salida) " +
+                                             "OR (? BETWEEN r.fecha_entrada AND r.fecha_salida) " +
+                                             "OR (r.fecha_entrada BETWEEN ? AND ?) " +
+                                             "OR (r.fecha_salida BETWEEN ? AND ?))";
 
     try (Connection conn = DataSourceManager.getConnection();
          PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -462,6 +467,10 @@ private BigDecimal calcularSuplementoTemporada(LocalDate inicio, LocalDate fin) 
         stmt.setInt(1, numPersonas);
         stmt.setDate(2, java.sql.Date.valueOf(inicio));
         stmt.setDate(3, java.sql.Date.valueOf(fin));
+        stmt.setDate(4, java.sql.Date.valueOf(inicio));
+        stmt.setDate(5, java.sql.Date.valueOf(fin));
+        stmt.setDate(6, java.sql.Date.valueOf(inicio));
+        stmt.setDate(7, java.sql.Date.valueOf(fin));
 
         try (ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
@@ -472,7 +481,7 @@ private BigDecimal calcularSuplementoTemporada(LocalDate inicio, LocalDate fin) 
                         rs.getString("estado"),
                         rs.getBigDecimal("precio"));
 
-                HabitacionesDisponibles.add(habitacion);
+                habitacionesDisponibles.add(habitacion);
             }
         }
     } catch (SQLException e) {
@@ -481,9 +490,9 @@ private BigDecimal calcularSuplementoTemporada(LocalDate inicio, LocalDate fin) 
         System.err.println(errorMessage);
         mostrarAlerta("Error de base de datos", errorMessage + "\nDetalles: " + e.getMessage());
     }
-    return HabitacionesDisponibles;
+    return habitacionesDisponibles;
 }
-
+   
 
     // Método para mostrar una alerta
     private void mostrarAlerta(String titulo, String mensaje) {

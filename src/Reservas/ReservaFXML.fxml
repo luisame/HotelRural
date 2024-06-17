@@ -13,10 +13,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ProgressIndicator?>
 
-<AnchorPane prefHeight="250.0" prefWidth="1000.0" stylesheets="@DisponibilidadCCS.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Reservas.ReservaController">
-    <VBox alignment="CENTER" layoutX="-18.0" spacing="20" style="-fx-padding: 20px;">
-        <HBox alignment="TOP_RIGHT" spacing="10" />
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" stylesheets="@DisponibilidadCCS.css" xmlns="http://javafx.com/javafx/17.0.8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Reservas.ReservaController">
+    <VBox alignment="CENTER" spacing="20" style="-fx-padding: 20px;" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
         <Label styleClass="header-label" text="Creación de Reserva" />
         <HBox alignment="CENTER" spacing="20">
             <VBox spacing="10">
@@ -116,6 +116,7 @@
          </rowConstraints>
         </GridPane>
         <Button onAction="#crearReserva" text="Crear Reserva" />
+        <ProgressIndicator fx:id="progressIndicator" visible="false" />
     </VBox>
-      <Button fx:id="btnVolver" layoutX="833.0" layoutY="46.0" onAction="#volverADisponibilidad" styleClass="button-volver" text="Volver" />
+    <Button fx:id="btnVolver" layoutX="833.0" layoutY="46.0" onAction="#volverADisponibilidad" styleClass="button-volver" text="Volver" />
 </AnchorPane>
