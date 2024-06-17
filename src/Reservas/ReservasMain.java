@@ -27,11 +27,10 @@ public class ReservasMain extends Application {
         launch(args);
     }
  /**
-     * El método start se invoca cuando la aplicación JavaFX comienza. Configura el 
-     * escenario principal y carga la interfaz de usuario desde un archivo FXML.
+     * El método start se invoca cuando la aplicación JavaFX comienza.Configura el 
+ escenario principal y carga la interfaz de usuario desde un archivo FXML.
      *
      * @param primaryStage El escenario principal para esta aplicación.
-     * @throws Exception Si ocurre un error durante la carga del archivo FXML.
      */
     @Override
     public void start(Stage primaryStage) {

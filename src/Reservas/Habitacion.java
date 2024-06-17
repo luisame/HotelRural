@@ -7,7 +7,10 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-
+/**
+ * La clase Habitacion representa una habitación en el hotel con sus atributos
+ * y métodos necesarios para la gestión de la misma.
+ */
 public class Habitacion {
     // Atributos de la clase Habitacion
     private final IntegerProperty id;

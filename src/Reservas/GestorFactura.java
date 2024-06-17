@@ -17,7 +17,10 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import javafx.scene.control.Alert;
 import utilidades.DataSourceManager;
-
+/**
+ * La clase GestorFactura se encarga de generar facturas en formato PDF para reservas específicas
+ * y enviarlas por correo electrónico a los clientes.
+ */
 public class GestorFactura {
 
     /**

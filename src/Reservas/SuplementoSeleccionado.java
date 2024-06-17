@@ -9,7 +9,10 @@ package Reservas;
  * @author luisa
  */
 import java.math.BigDecimal;
-
+/**
+ * La clase SuplementoSeleccionado representa un suplemento que ha sido seleccionado
+ * con su precio asociado.
+ */
 public class SuplementoSeleccionado {
     private BigDecimal precio;
 

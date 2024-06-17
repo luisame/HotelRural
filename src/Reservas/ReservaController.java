@@ -29,7 +29,11 @@ import utilidades.UsuarioInfo;
 import java.io.IOException;
 import javafx.scene.control.ProgressIndicator;
 import javafx.stage.Window;
-
+/**
+ * El controlador para gestionar las reservas de los huéspedes.
+ * Esta clase se encarga de manejar la lógica y la interacción de la interfaz de usuario 
+ * para gestionar la información de las reservas.
+ */
 public class ReservaController {
 
     @FXML private TextField dniField;
