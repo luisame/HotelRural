@@ -125,13 +125,72 @@ public void initialize() {
         }
     });
 
-    // Cargar datos del cliente automáticamente al introducir el DNI
-     dniField.textProperty().addListener((observable, oldValue, newValue) -> {
-        if (newValue != null && !newValue.isEmpty()) {
-            buscarClientePorDNI(newValue);
+   // Cargar datos del cliente automáticamente al perder el foco del campo DNI
+    dniField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+        if (!newValue) { // Si el campo DNI pierde el foco
+            String dni = dniField.getText();
+            if (dni != null && !dni.isEmpty()) {
+                if (dni.matches("\\d{8}[A-Za-z]")) {
+                    buscarClientePorDNI(dni);
+                } else {
+                    mostrarAlerta("DNI Inválido", "Por favor, ingrese un DNI válido de 8 dígitos seguidos de una letra.");
+                }
+            }
         }
     });
 }
+
+ /**
+     * Busca un cliente por DNI.
+     * 
+     * @param dni El DNI del cliente.
+     */
+    @FXML
+    public void buscarClientePorDNI(String dni) {
+        String sql = "SELECT * FROM clientes WHERE dni = ?";
+
+        try (Connection conn = DataSourceManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, dni);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                nombreField.setText(rs.getString("nombre_cliente"));
+                apellidoField.setText(rs.getString("apellido_cliente"));
+                direccionField.setText(rs.getString("direccion"));
+                ciudadField.setText(rs.getString("ciudad"));
+                codPostalField.setText(rs.getString("codPostal"));
+                telefonoField.setText(rs.getString("telefono"));
+                emailField.setText(rs.getString("email"));
+                otraInfoField.setText(rs.getString("otra_informacion"));
+            } else {
+                limpiarCamposFormulario();
+                mostrarAlerta("Cliente no encontrado", "No se encontró un cliente con el DNI proporcionado.");
+            }
+            rs.close();
+        } catch (SQLException e) {
+            String errorMessage = "Hubo un problema al buscar el cliente. Por favor, inténtelo de nuevo.";
+            System.err.println(errorMessage);
+            mostrarAlerta("Error", errorMessage + "\nDetalles: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Limpia los campos del formulario.
+     */
+    private void limpiarCamposFormulario() {
+        nombreField.setText("");
+        apellidoField.setText("");
+        direccionField.setText("");
+        ciudadField.setText("");
+        codPostalField.setText("");
+        telefonoField.setText("");
+        emailField.setText("");
+        otraInfoField.setText("");
+    }
+
+    
 
 /**
  * 
@@ -149,19 +208,8 @@ public void initialize() {
     tablaHabitacionesReservadas.setItems(data);
     
 }
-/**
- * 
- */
-private void limpiarCamposFormulario() {
-    nombreField.setText("");
-    apellidoField.setText("");
-    direccionField.setText("");
-    ciudadField.setText("");
-    codPostalField.setText("");
-    telefonoField.setText("");
-    emailField.setText("");
-    otraInfoField.setText("");
-}
+
+
 /**
  * 
  * @param habitacionSeleccionada 
@@ -171,6 +219,7 @@ private void limpiarCamposFormulario() {
         capacidadField.setText(String.valueOf(habitacionSeleccionada.getCapacidad()));
         estadoField.setText(habitacionSeleccionada.getEstado());
     }
+    
     // Método para volver a la pantalla de disponibilidad
     @FXML
     
@@ -202,40 +251,7 @@ public void volverADisponibilidad(ActionEvent event) {
         mostrarAlerta("Error", "No se pudo cargar la pantalla de disponibilidad.");
     }
 }
-/**
- * 
- * @param dni 
- */
 
-    @FXML
-public void buscarClientePorDNI(String dni) {
-    String sql = "SELECT * FROM clientes WHERE dni = ?";
-
-    try (Connection conn = DataSourceManager.getConnection();
-         PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-        stmt.setString(1, dni);
-        ResultSet rs = stmt.executeQuery();
-
-        if (rs.next()) {
-            nombreField.setText(rs.getString("nombre_cliente"));
-            apellidoField.setText(rs.getString("apellido_cliente"));
-            direccionField.setText(rs.getString("direccion"));
-            ciudadField.setText(rs.getString("ciudad"));
-            codPostalField.setText(rs.getString("codPostal"));
-            telefonoField.setText(rs.getString("telefono"));
-            emailField.setText(rs.getString("email"));
-            otraInfoField.setText(rs.getString("otra_informacion"));
-        } else {
-            limpiarCamposFormulario();
-            mostrarAlerta("Cliente no encontrado", "No se encontró un cliente con el DNI proporcionado.");
-        }
-        rs.close();
-    } catch (SQLException e) {
-        e.printStackTrace();
-        mostrarAlerta("Error", "Hubo un problema al buscar el cliente. Por favor, inténtelo de nuevo.");
-    }
-}
  
 
 /**
