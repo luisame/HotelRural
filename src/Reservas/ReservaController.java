@@ -255,26 +255,42 @@ public void volverADisponibilidad(ActionEvent event) {
  
 
 /**
- * 
+ * Clase que representa el precio total y la temporada correspondiente.
  */
-
 public class PrecioTemporada {
     private BigDecimal precioTotal;
     private String temporada;
 
+    /**
+     * Constructor de la clase PrecioTemporada.
+     * 
+     * @param precioTotal El precio total calculado para la temporada.
+     * @param temporada El nombre de la temporada.
+     */
     public PrecioTemporada(BigDecimal precioTotal, String temporada) {
         this.precioTotal = precioTotal;
         this.temporada = temporada;
     }
 
+    /**
+     * Obtiene el precio total.
+     * 
+     * @return El precio total.
+     */
     public BigDecimal getPrecioTotal() {
         return precioTotal;
     }
 
+    /**
+     * Obtiene el nombre de la temporada.
+     * 
+     * @return El nombre de la temporada.
+     */
     public String getTemporada() {
         return temporada;
     }
 }
+
 /**
  * 
  * @param inicio
